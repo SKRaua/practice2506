@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <!--官网复制-->
+
+<mapper namespace="org.example.mapper.UserMapper">
+    <select id="findUser" resultType="org.example.pojo.User"> <!--返回值是User类型的对象-->
+        select * from cqupt_user
+    </select>
+
+    <!--作业1:查询id为3的用户 -->
+    <select id="findUserById" resultType="org.example.pojo.User">
+        select * from cqupt_user where id=3
+    </select>
+
+    <!--作业2:添加一个用户 -->
+   <insert id="insertUser">
+       insert into cqupt_user (id,username,name,age,gender) values (#{id},#{username},#{name},#{age},#{gender})
+   </insert>
+
+    <!--作业3:将李华的年龄改为18 -->
+    <update id="updateUserAge">
+        update cqupt_user set age=#{age} where name=#{name}
+    </update>
+
+    <!--作业4:删除id为3的用户-->
+    <delete id="deleteUserById">
+        delete from cqupt_user where id=#{id}
+    </delete>
+
+</mapper>

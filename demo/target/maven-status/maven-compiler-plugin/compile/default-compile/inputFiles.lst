@@ -1,9 +1,4 @@
-/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/com/cqupt/Main.java
-/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/com/cqupt/pojo/Book.java
-/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/com/cqupt/pojo/Student.java
-/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/com/cqupt/pojo/GeneratorImplement.java
-/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/com/cqupt/pojo/Generic.java
-/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/com/cqupt/pojo/RefectionTest.java
-/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/com/cqupt/pojo/ExTest.java
-/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/com/cqupt/pojo/Person.java
-/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/com/cqupt/pojo/Generator.java
+/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/org/example/controller/UserController.java
+/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/org/example/pojo/User.java
+/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/org/example/mapper/UserMapper.java
+/Users/SKRaua/Desktop/CODE/practice2506/demo/src/main/java/org/example/SpMyBatisApplication.java
