@@ -22,14 +22,10 @@ npm run build
 
 存放练习的备份。
 
-## demo
+## demo-\*
 
 练习 java 代码所用的演示项目
 
-### demo-for-springboot
-
-maven + springboot web 编程练习代码
-
-## temp
+### temp
 
 临时文件夹
