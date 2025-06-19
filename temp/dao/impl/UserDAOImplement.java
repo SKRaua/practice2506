@@ -1,6 +1,6 @@
-package org.example.dao.impl;
+package org.skraua.dao.impl;
 
-import org.example.dao.UserDAO;
+import org.skraua.dao.UserDAO;
 
 /*
  * @author Zhou Xinyang
@@ -20,12 +20,13 @@ public class UserDAOImplement implements UserDAO {
         System.out.println("UserDAO——— 我的名字是" + name + "，我今年" + age + "岁。");
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
+    /*
+     * public void setName(String name){
+     * this.name = name;
+     * }
+     * 
+     * public void setAge(int age){
+     * this.age = age;
+     * }
+     */
 }

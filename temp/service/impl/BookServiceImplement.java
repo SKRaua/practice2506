@@ -1,7 +1,7 @@
-package org.example.service.impl;
+package org.skraua.service.impl;
 
-import org.example.dao.BookDAO;
-import org.example.service.BookService;
+import org.skraua.dao.BookDAO;
+import org.skraua.service.BookService;
 
 /*
  * @author Zhou Xinyang
@@ -19,11 +19,12 @@ public class BookServiceImplement implements BookService {
 
     @Override
     public void writeBook() {
-        System.out.println("BookService: 取出bookDAO,开始写书。。。");
+        System.out.println("BookService: 拿到bookDAO,开始写书。。。");
         bookDAO.readBook();
     }
 
-    public void setBookDAO(BookDAO bookDAO) {
-        this.bookDAO = bookDAO;
-    }
+    // public void setBookDAO(BookDAO bookDAO) {
+    // this.bookDAO = bookDAO;
+    // }
+
 }

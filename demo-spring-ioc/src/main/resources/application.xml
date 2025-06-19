@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
-    <!--    bean:配置bean的标签-->
+    <!-- 配置bean标签 -->
     <bean id="userDAO" scope="singleton" class="org.example.dao.impl.UserDAOImplement">
 
-        <!--属性方式注入成员-->
-<!--        <property name="name" value="张三"></property>-->
-<!--        <property name="age" value="18"></property>-->
+        <!-- 属性方式注入 -->
+        <!-- <property name="name" value="张三"></property>-->
+        <!-- <property name="age" value="18"></property>-->
 
-        <!--构造方式注入成员-->
+        <!-- 构造方式注入 -->
         <constructor-arg name="name" value="张三"></constructor-arg>
         <constructor-arg name="age" value="18"></constructor-arg>
     </bean>
 
-    <!--使用Autowired注入-->
+    <!-- Autowired注入-->
     <bean id="userService" class="org.example.service.impl.UserServiceImplement" autowire="byType">
-        <!--属性方式注入方法-->
-    <!--<property name="userDAO" ref="userDAO"></property>-->
-        <!--构造方式注入方法-->
-    <!--<constructor-arg name="userDAO" ref="userDAO"></constructor-arg>-->
+        <!-- 属性方式注入-->
+        <!-- <property name="userDAO" ref="userDAO"></property>-->
+        <!-- 构造方式注入-->
+        <!-- <constructor-arg name="userDAO" ref="userDAO"></constructor-arg> -->
     </bean>
 
     <bean id="bookDAO" class="org.example.dao.impl.BookDAOImplement">
-    <!--<property name="bookName" value="《数据结构》"></property>-->
-    <!--<property name="author" value="严蔚敏"></property>-->
+        <!-- <property name="bookName" value="《数据结构》"></property> -->
+        <!-- <property name="author" value="严蔚敏"></property> -->
         <constructor-arg name="bookName" value="《数据结构》"></constructor-arg>
         <constructor-arg name="author" value="严蔚敏"></constructor-arg>
     </bean>
 
     <bean id="bookService" class="org.example.service.impl.BookServiceImplement">
-    <!--<property name="bookDAO" ref="bookDAO"></property>-->
+        <!-- <property name="bookDAO" ref="bookDAO"></property> -->
         <constructor-arg name="bookDAO" ref="bookDAO"></constructor-arg>
     </bean>
 

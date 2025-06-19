@@ -1,7 +1,7 @@
-package org.example.service.impl;
+package org.skraua.service.impl;
 
-import org.example.dao.UserDAO;
-import org.example.service.UserService;
+import org.skraua.dao.UserDAO;
+import org.skraua.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /*
@@ -21,10 +21,11 @@ public class UserServiceImplement implements UserService {
 
     @Override
     public void knowName() {
-        System.out.println("UserService: 已知UserDAO名字，开始处理。");
+        System.out.println("UserService: 已知UserDAO的名字，开始处理业务。");
         userDAO.getName();
     }
 
+    // 提供对userDAO的set方法，使用setter注入，在application.xml中进行配置
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
     }

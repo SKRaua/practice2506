@@ -1,9 +1,9 @@
-package org.example;
+package org.skraua;
 
-import org.example.dao.UserDAO;
-import org.example.dao.impl.PersonDAOImplement;
-import org.example.service.BookService;
-import org.example.service.UserService;
+import org.skraua.dao.UserDAO;
+import org.skraua.dao.impl.PersonDAOImplement;
+import org.skraua.service.BookService;
+import org.skraua.service.UserService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -12,23 +12,23 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class Main {
     public static void main(String[] args) {
-        // 传统方式获取Bean
         // UserDAOImplement userDAOImplement = new UserDAOImplement();
         // userDAOImplement.getName();
-
-        // IoC方式获取Bean
+        System.out.println("------------------Spring IoC容器------------------");
+        // 使用IoC方式获取Bean对象
         @SuppressWarnings("resource")
         ApplicationContext act = new ClassPathXmlApplicationContext("application.xml");// 获取IOC容器
         // 获取bean
-        // spring管理的bean默认单例
+        // spring管理的bean默认是单例的 默认只建立一个对象
         UserDAO userDAO1 = (UserDAO) act.getBean("userDAO");
         UserDAO userDAO2 = (UserDAO) act.getBean("userDAO");
         userDAO1.getName();
         System.out.println("bean为单例：" + (userDAO1 == userDAO2));
 
-        // 获取Bean对象 完成Service操作
+        // 使用IoC方式获取Bean对象 完成Service层操作
         UserService userService = (UserService) act.getBean("userService");
         userService.knowName();
+
         BookService bookService = (BookService) act.getBean("bookService");
         bookService.writeBook();
 
