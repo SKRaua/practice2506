@@ -1,6 +1,7 @@
 server:
   port: 8888
-  context-path: /yyzx # 服务端口和上下文路径配置
+  servlet:
+    context-path: /yyzx # 服务端口和上下文路径配置
 
 # 数据库连接配置
 spring:
@@ -10,15 +11,16 @@ spring:
     username: root
     password: 123456
 
-# springfox swager 不支持spring2.7+
-mvc:
-  pathmatch:
-    matching-strategy: ant_path_matcher # 使用 Ant 风格的路径匹配
+  # springfox swager 不支持spring2.7+
+  mvc:
+    pathmatch:
+      # matching-strategy: ant_path_matcher # 这种配置似乎有问题
+      matching-strategy: ant-path-matcher # 使用 Ant 风格的路径匹配
 
-# 日期时间配置
-jackson:
-  time-zone: GMT+8 # 设置时区为东八区
-  date-format: yyyy-MM-dd HH:mm:ss # 设置日期时间格式
+  # 日期时间配置
+  jackson:
+    time-zone: GMT+8 # 设置时区为东八区
+    date-format: yyyy-MM-dd HH:mm:ss # 设置日期时间格式
 
 # mybatis-plus配置
 mybatis-plus:
