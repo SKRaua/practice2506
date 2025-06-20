@@ -14,14 +14,10 @@
 
 颐养中心项目前端
 
-## vue-prac
-
-vue3 的学习与练习代码。
-
 Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+npm run serve
 ```
 
 Type-Check, Compile and Minify for Production
@@ -29,6 +25,10 @@ Type-Check, Compile and Minify for Production
 ```sh
 npm run build
 ```
+
+## vue-prac
+
+vue3 的学习与练习代码。
 
 ## demo-\*
 
