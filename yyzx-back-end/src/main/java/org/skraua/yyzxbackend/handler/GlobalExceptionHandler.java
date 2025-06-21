@@ -1,11 +1,5 @@
 package org.skraua.yyzxbackend.handler;
 
-/**
- * @author Zhou Xinyang
- * @date 2025/06/19
- * @description 全局异常处理器
- */
-
 import org.skraua.yyzxbackend.utils.ResultVo;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +9,11 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 
+/**
+ * @author Zhou Xinyang
+ * @date 2025/06/19
+ * @description 全局异常处理器
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

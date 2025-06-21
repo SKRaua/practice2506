@@ -1,13 +1,12 @@
 package org.skraua.yyzxbackend.utils;
 
+import lombok.Data;
+
 /**
  * @author Zhou Xinyang
  * @date 2025/06/19
  * @description 响应结果封装类
  */
-
-import lombok.Data;
-
 @Data
 public class ResultVo<T> {
     private boolean flag; // 响应标志

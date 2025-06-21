@@ -1,11 +1,5 @@
 package org.skraua.yyzxbackend.interceptor;
 
-/**
- * @author Zhou Xinyang
- * @date 2025/06/19
- * @description 检查令牌的拦截器
- */
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,6 +12,11 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 
+/**
+ * @author Zhou Xinyang
+ * @date 2025/06/19
+ * @description 检查令牌的拦截器
+ */
 @Component
 public class CheckTokenInterceptor implements HandlerInterceptor {
 

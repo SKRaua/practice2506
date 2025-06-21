@@ -1,16 +1,16 @@
 package org.skraua.yyzxbackend.config;
 
-/**
- * @author Zhou Xinyang
- * @date 2025/06/19
- * @description Web配置类
- */
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * @author Zhou Xinyang
+ * @date 2025/06/19
+ * @description Web配置类
+ */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 

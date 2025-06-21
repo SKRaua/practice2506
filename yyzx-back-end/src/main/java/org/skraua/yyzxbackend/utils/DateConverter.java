@@ -3,18 +3,17 @@ package org.skraua.yyzxbackend.utils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-/**
- * @author Zhou Xinyang
- * @date 2025/06/19
- * @description 日期转换工具类
- */
-
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.lang.NonNull;
 import org.springframework.core.convert.converter.Converter;
 
+/**
+ * @author Zhou Xinyang
+ * @date 2025/06/19
+ * @description 日期转换工具类
+ */
 public class DateConverter implements Converter<String, Date> {
 
     private static final List<String> FORMATS = new ArrayList<>();
