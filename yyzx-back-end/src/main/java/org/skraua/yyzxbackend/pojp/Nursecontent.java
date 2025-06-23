@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @ApiModel(value = "Nursecontent", description = "Nursecontent实体对象")
-public class Nursecontent {
+public class NurseContent {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键")

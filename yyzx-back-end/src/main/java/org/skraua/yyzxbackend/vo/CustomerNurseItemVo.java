@@ -1,4 +1,4 @@
-package org.skraua.yyzxbackend.pojp;
+package org.skraua.yyzxbackend.vo;
 
 import java.util.Date;
 
@@ -14,15 +14,16 @@ import lombok.EqualsAndHashCode;
 
 /**
  * @author Zhou Xinyang
- * @date 2025/06/21
- * @description 顾客护理项目
+ * @date 2025/06/23
+ * @description 顾客护理项目视图数据对象
  */
 @Data
 @EqualsAndHashCode
-@ApiModel(value = "Customernurseitem", description = "Customernurseitem实体对象")
-public class CustomerNurseItem {
+@ApiModel(value = "CustomernurseitemVo", description = "CustomernurseitemVo视图数据对象")
+public class CustomerNurseItemVo {
     private static final long serialVersionUID = 1L;
 
+    // Customernurseitem
     @ApiModelProperty(value = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -48,4 +49,19 @@ public class CustomerNurseItem {
 
     @ApiModelProperty(value = "服务到期日期")
     private Date maturityTime;
+
+    // Customer
+    @ApiModelProperty(value = "顾客姓名")
+    private String customerName;
+
+    // NurseContent
+    @ApiModelProperty(value = "项目编号")
+    private String serialNumber;
+
+    @ApiModelProperty(value = "项目名称")
+    private String nursingName;
+
+    @ApiModelProperty(value = "项目价格")
+    private String servicePrice;
+
 }
