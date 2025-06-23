@@ -31,7 +31,7 @@ public class Room {
     private String roomFloor;
 
     @ApiModelProperty(value = "房间号")
-    private int RoomNo;
+    private Integer RoomNo;
 
     @ApiModelProperty(value = "床位列表")
     @TableField(exist = false)
