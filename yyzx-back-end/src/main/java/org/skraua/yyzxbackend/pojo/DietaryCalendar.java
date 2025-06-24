@@ -1,4 +1,4 @@
-package org.skraua.yyzxbackend.pojp;
+package org.skraua.yyzxbackend.pojo;
 
 import java.util.Date;
 

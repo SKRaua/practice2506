@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @ApiModel(value = "BedDetails", description = "BedDetails视图数据对象")
-public class BedDetails {
+public class BedDetailsVo {
     private static final long serialVersionUID = 1L;
 
     // BedDetails

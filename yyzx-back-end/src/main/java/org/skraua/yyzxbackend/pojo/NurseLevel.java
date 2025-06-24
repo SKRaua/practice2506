@@ -1,6 +1,4 @@
-package org.skraua.yyzxbackend.pojp;
-
-import java.util.Date;
+package org.skraua.yyzxbackend.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -14,33 +12,24 @@ import lombok.EqualsAndHashCode;
 /**
  * @author Zhou Xinyang
  * @date 2025/06/21
- * @description 床位详情
+ * @description 护理级别
  */
 @Data
 @EqualsAndHashCode
-@ApiModel(value = "Beddetails", description = "Beddetails实体对象")
-public class Beddetails {
+@ApiModel(value = "Nurselevel", description = "Nurselevel实体对象")
+public class NurseLevel {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @ApiModelProperty(value = "床位起始时间")
-    private Date startDate;
-
-    @ApiModelProperty(value = "床位结束时间")
-    private Date endDate;
-
-    @ApiModelProperty(value = "床位详细信息")
-    private String bedDetails;
-
-    @ApiModelProperty(value = "客户id")
-    private Integer customerId;
-
-    @ApiModelProperty(value = "床位id")
-    private Integer bedId;
-
     @ApiModelProperty(value = "逻辑删除标记，（0显示，1隐藏）")
     private Integer isDeleted;
+
+    @ApiModelProperty(value = "护理级别")
+    private String levelName;
+
+    @ApiModelProperty(value = "级别状态 启用1，停用2")
+    private Integer levelStatus;
 }

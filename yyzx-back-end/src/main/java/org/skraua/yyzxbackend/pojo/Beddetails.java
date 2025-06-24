@@ -1,4 +1,4 @@
-package org.skraua.yyzxbackend.pojp;
+package org.skraua.yyzxbackend.pojo;
 
 import java.util.Date;
 
@@ -14,30 +14,33 @@ import lombok.EqualsAndHashCode;
 /**
  * @author Zhou Xinyang
  * @date 2025/06/21
- * @description 角色
+ * @description 床位详情
  */
 @Data
 @EqualsAndHashCode
-@ApiModel(value = "Role", description = "Role实体对象")
-public class Role {
+@ApiModel(value = "Beddetails", description = "Beddetails实体对象")
+public class Beddetails {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @ApiModelProperty(value = "创建时间")
-    private Date createTime;
+    @ApiModelProperty(value = "床位起始时间")
+    private Date startDate;
 
-    @ApiModelProperty(value = "更新时间")
-    private Date updateTime;
+    @ApiModelProperty(value = "床位结束时间")
+    private Date endDate;
 
-    @ApiModelProperty(value = "更新人")
-    private Integer updateBy;
+    @ApiModelProperty(value = "床位详细信息")
+    private String bedDetails;
+
+    @ApiModelProperty(value = "客户id")
+    private Integer customerId;
+
+    @ApiModelProperty(value = "床位id")
+    private Integer bedId;
 
     @ApiModelProperty(value = "逻辑删除标记，（0显示，1隐藏）")
     private Integer isDeleted;
-
-    @ApiModelProperty(value = "角色名")
-    private String name;
 }

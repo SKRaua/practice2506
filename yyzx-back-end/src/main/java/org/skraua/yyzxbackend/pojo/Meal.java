@@ -1,4 +1,4 @@
-package org.skraua.yyzxbackend.pojp;
+package org.skraua.yyzxbackend.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

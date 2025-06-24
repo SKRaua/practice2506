@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @ApiModel(value = "CustomerPreference", description = "CustomerPreference查询实体对象")
-public class CustomerPreference {
+public class CustomerPreferenceDTO {
     @ApiModelProperty(value = "喜好编号")
     private Integer preferId;
 

@@ -1,4 +1,4 @@
-package org.skraua.yyzxbackend.pojp;
+package org.skraua.yyzxbackend.pojo;
 
 import java.util.Date;
 
@@ -14,12 +14,12 @@ import lombok.EqualsAndHashCode;
 /**
  * @author Zhou Xinyang
  * @date 2025/06/21
- * @description 外出
+ * @description 退住信息
  */
 @Data
 @EqualsAndHashCode
-@ApiModel(value = "Outward", description = "Outward实体对象")
-public class Outward {
+@ApiModel(value = "Backdown", description = "Backdown实体对象")
+public class Backdown {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键")
@@ -35,28 +35,16 @@ public class Outward {
     @ApiModelProperty(value = "客户id")
     private Integer customerId;
 
-    @ApiModelProperty(value = "外出事由")
-    private String outgoingreason;
+    @ApiModelProperty(value = "退住时间")
+    private Date retreattime;
 
-    @ApiModelProperty(value = "外出时间")
-    private Date outgoingtime;
+    @ApiModelProperty(value = "退住类型 0-正常退住 1-死亡退住 2-保留床位")
+    private Integer retreattype;
 
-    @ApiModelProperty(value = "预计回院时间")
-    private Date expectedreturntime;
+    @ApiModelProperty(value = "退住原因")
+    private String retreatreason;
 
-    @ApiModelProperty(value = "实际回院时间")
-    private Date actualreturntime;
-
-    @ApiModelProperty(value = "陪同人")
-    private String escorted;
-
-    @ApiModelProperty(value = "陪同人与老人关系")
-    private String relation;
-
-    @ApiModelProperty(value = "陪同人电话")
-    private String escortedtel;
-
-    @ApiModelProperty(value = "审批状态")
+    @ApiModelProperty(value = "审批状态 0-已提交 1-同意 2-拒绝")
     private Integer auditstatus;
 
     @ApiModelProperty(value = "审批人")

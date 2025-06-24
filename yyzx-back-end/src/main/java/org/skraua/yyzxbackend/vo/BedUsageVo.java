@@ -2,7 +2,7 @@ package org.skraua.yyzxbackend.vo;
 
 import java.util.List;
 
-import org.skraua.yyzxbackend.pojp.Room;
+import org.skraua.yyzxbackend.pojo.Room;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
