@@ -1,5 +1,6 @@
 package org.skraua.yyzxbackend.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -19,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @ApiModel(value = "Customer", description = "Customer实体对象")
-public class Customer {
+public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键")

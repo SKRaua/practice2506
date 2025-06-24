@@ -1,5 +1,6 @@
 package org.skraua.yyzxbackend.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode // 自动生成equals和hashCode方法
 @ApiModel(value = "User对象", description = "User实体对象")
-public class User {
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键")

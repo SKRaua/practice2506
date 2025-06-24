@@ -17,6 +17,11 @@ import io.swagger.annotations.ApiOperation;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * @author Zhou Xinyang
+ * @date 2025/06/24
+ * @description 
+ */
 @RestController
 @RequestMapping("/bed")
 @Api(tags = "床位管理") // 所有的swagger都在这下面

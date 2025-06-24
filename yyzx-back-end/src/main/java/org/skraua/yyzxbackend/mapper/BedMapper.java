@@ -11,5 +11,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @description BedMapper
  */
 public interface BedMapper extends BaseMapper<Bed> {
-    BedUsageVo selectBedCount();
+    BedUsageVo selectBedCountVo();
 }

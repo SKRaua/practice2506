@@ -1,5 +1,7 @@
 package org.skraua.yyzxbackend.pojo;
 
+import java.io.Serializable;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 
@@ -17,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @ApiModel(value = "Nurselevelitem", description = "Nurselevelitem实体对象")
-public class NurseLevelItem {
+public class NurseLevelItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键")

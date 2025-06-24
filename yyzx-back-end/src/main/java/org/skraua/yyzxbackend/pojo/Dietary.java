@@ -1,5 +1,6 @@
 package org.skraua.yyzxbackend.pojo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @ApiModel(value = "Dietary", description = "Dietary实体对象")
-public class Dietary {
+public class Dietary implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键")

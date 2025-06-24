@@ -7,6 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+/**
+ * @author Zhou Xinyang
+ * @date 2025/06/24
+ * @description
+ */
 @Service
 public class BedServiceImpl extends ServiceImpl<BedMapper, Bed> implements BedService {
 

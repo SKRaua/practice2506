@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.skraua.yyzxbackend.mapper.BedDetailsMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="bedDetails">
+        <id column="id" property="id" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="start_date" property="startDate" />
+        <result column="end_date" property="endDate" />
+        <result column="bed_details" property="bedDetails" />
+        <result column="customer_id" property="customerId" />
+        <result column="bed_id" property="bedId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List"> id, is_deleted, start_date, end_date, bed_details, customer_id, bed_id </sql>
+
+    <select id="selectBedDetailsVo" resultType="bedDetailsVo"> 
+    SELECT
+        b.id,
+        b.is_deleted,
+        b.start_date,
+        b.end_date,
+        b.bed_details,
+        c.bed_id,
+        c.customer_name,
+        c.customer_sex 
+    FROM
+        beddetails b
+        LEFT JOIN customer c ON b.customer_id = c.id
+        <where>
+            <if test="bedDetailsDTO != null and bedDetailsDTO.customerName != null and bedDetailsDTO.customerName != ''">
+            AND c.customer_name LIKE CONCAT(CONCAT('%', #{bedDetailsDTO.customerName}), '%')
+            </if>
+            <if test="bedDetailsDTO != null and bedDetailsDTO.startDate != null and bedDetailsDTO.startDate != ''">
+            AND b.start_date between #{bedDetailsDTO.start_date} and #{bedDetailsDTO.end_date}
+            </if>
+            <if test="bedDetailsDTO != null and bedDetailsDTO.isDeleted != null">
+            AND b.is_deleted = #{bedDetailsDTO.isDeleted}
+            </if>
+        </where>
+    ORDER BY b.bed_details DESC
+    </select>
+
+</mapper>

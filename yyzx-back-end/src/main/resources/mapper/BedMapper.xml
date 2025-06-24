@@ -14,7 +14,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List"> id, room_no, bed_status, remarks, bed_no </sql>
 
-    <select id="selectBedCount" resultType="BedUsageVo"> 
+    <select id="selectBedCountVo" resultType="bedUsageVo"> 
         SELECT (SELECT count(1) FROM bed ) total_num,
         (SELECT count(1) FROM bed WHERE bed_status = 1) available_num, 
         (SELECT count(1) FROM bed WHERE bed_status = 2) occupied_num, 

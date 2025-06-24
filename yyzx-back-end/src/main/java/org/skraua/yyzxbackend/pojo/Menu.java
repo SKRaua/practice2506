@@ -1,5 +1,6 @@
 package org.skraua.yyzxbackend.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -20,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @ApiModel(value = "Menu", description = "Menu实体对象")
-public class Menu {
+public class Menu implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键")
