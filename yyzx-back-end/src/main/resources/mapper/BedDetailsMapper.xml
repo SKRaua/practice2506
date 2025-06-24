@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.skraua.yyzxbackend.mapper.BedDetailsMapper">
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="bedDetails">
+    <resultMap id="BaseResultMap" type="BedDetails">
         <id column="id" property="id" />
         <result column="is_deleted" property="isDeleted" />
         <result column="start_date" property="startDate" />
@@ -15,7 +15,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List"> id, is_deleted, start_date, end_date, bed_details, customer_id, bed_id </sql>
 
-    <select id="selectBedDetailsVo" resultType="bedDetailsVo"> 
+    <select id="selectBedDetailsVo" resultType="BedDetailsVo"> 
     SELECT
         b.id,
         b.is_deleted,
