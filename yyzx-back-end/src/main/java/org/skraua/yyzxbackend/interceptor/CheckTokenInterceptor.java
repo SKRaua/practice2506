@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.lang.NonNull;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
+// import io.jsonwebtoken.Claims;
+// import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 
@@ -48,7 +48,8 @@ public class CheckTokenInterceptor implements HandlerInterceptor {
             // 解析token，必须和key所生成的token一致
             parser.setSigningKey("skraua202020");
             // 检验token是否正确
-            Jws<Claims> claimsJws = parser.parseClaimsJws(token);
+            // Jws<Claims> claimsJws =
+            parser.parseClaimsJws(token);
 
             // TODO: 获取用户信息
             // 提取用户信息并设置到请求属性中

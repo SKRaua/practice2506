@@ -1,5 +1,7 @@
 package org.skraua.yyzxbackend.vo;
 
+import java.io.Serializable;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 
@@ -17,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @ApiModel(value = "BedDetails", description = "BedDetails视图数据对象")
-public class BedDetailsVo {
+public class BedDetailsVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // BedDetails

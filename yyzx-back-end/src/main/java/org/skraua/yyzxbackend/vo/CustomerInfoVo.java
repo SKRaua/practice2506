@@ -1,5 +1,6 @@
 package org.skraua.yyzxbackend.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -19,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @ApiModel(value = "CustomerInfoVo", description = "CustomerInfoVo视图数据对象")
-public class CustomerInfoVo {
+public class CustomerInfoVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // Customer

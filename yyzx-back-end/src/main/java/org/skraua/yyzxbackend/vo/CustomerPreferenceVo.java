@@ -1,5 +1,7 @@
 package org.skraua.yyzxbackend.vo;
 
+import java.io.Serializable;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 
@@ -17,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @ApiModel(value = "CustomerPreferenceVo", description = "CustomerPreferenceVo视图数据对象")
-public class CustomerPreferenceVo {
+public class CustomerPreferenceVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键")

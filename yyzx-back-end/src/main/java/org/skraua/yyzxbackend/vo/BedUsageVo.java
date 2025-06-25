@@ -1,5 +1,6 @@
 package org.skraua.yyzxbackend.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.skraua.yyzxbackend.pojo.Room;
@@ -18,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @ApiModel(value = "CwsyBedVo", description = "CwsyBedVo视图数据对象")
-public class BedUsageVo {
+public class BedUsageVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "总床位")
