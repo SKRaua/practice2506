@@ -1,6 +1,7 @@
 package org.skraua.yyzxbackend.controller;
 
 import org.skraua.yyzxbackend.dto.BedDetailsDTO;
+import org.skraua.yyzxbackend.dto.ExchangeDTO;
 import org.skraua.yyzxbackend.pojo.BedDetails;
 import org.skraua.yyzxbackend.service.BedDetailsService;
 import org.skraua.yyzxbackend.utils.ResultVo;
@@ -45,7 +46,13 @@ public class BedDetailsController {
         return ResultVo.ok("修改成功");
     }
 
-    @PostMapping("/delBedDetails")
+    @PostMapping("/exchangeBed")
+    @ApiOperation("床位调换")
+    public ResultVo<Void> exchangeBed(ExchangeDTO exchangeDTO) throws Exception {
+        return bedDetailsService.exchangeBed(exchangeDTO);
+    }
+
+    @GetMapping("/delBedDetails")
     @ApiOperation("删除记录")
     public ResultVo<Void> delBedDetails(Integer id) throws Exception {
         bedDetailsService.removeById(id);

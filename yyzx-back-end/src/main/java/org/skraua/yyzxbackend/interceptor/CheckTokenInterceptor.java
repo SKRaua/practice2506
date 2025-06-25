@@ -50,8 +50,12 @@ public class CheckTokenInterceptor implements HandlerInterceptor {
             // 检验token是否正确
             Jws<Claims> claimsJws = parser.parseClaimsJws(token);
 
-            // TODO:提取用户信息...
-            // request.setAttribute("userId", claimsJws.getBody().get("userId"));
+            // TODO: 获取用户信息
+            // 提取用户信息并设置到请求属性中
+            // Object userId = claimsJws.getBody().get("userId");
+            // if (userId != null) {
+            // request.setAttribute("userId", userId);
+            // }
 
             return true;
         }
