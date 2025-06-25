@@ -18,6 +18,6 @@
         SELECT (SELECT count(1) FROM bed ) total_num,
         (SELECT count(1) FROM bed WHERE bed_status = 1) available_num, 
         (SELECT count(1) FROM bed WHERE bed_status = 2) occupied_num, 
-        (SELECT count(1) FROM bed WHERE bed_status = 3) outward_num, 
+        (SELECT count(1) FROM bed WHERE bed_status = 3) outward_num
     </select>
 </mapper>
