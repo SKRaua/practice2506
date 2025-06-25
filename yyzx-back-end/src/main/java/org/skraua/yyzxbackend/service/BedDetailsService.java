@@ -16,7 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface BedDetailsService extends IService<BedDetails> {
     // 返回一个分页查询的视图
-    ResultVo<Page<BedDetailsVo>> listBedDetailsVoPage(BedDetailsDTO bedDetailsDTO);
+    ResultVo<Page<BedDetailsVo>> listBedDetailsVoPage(BedDetailsDTO bedDetailsDTO) throws Exception;
 
     // 交换床位
     ResultVo<Void> exchangeBed(ExchangeDTO exchangeDTO) throws Exception;

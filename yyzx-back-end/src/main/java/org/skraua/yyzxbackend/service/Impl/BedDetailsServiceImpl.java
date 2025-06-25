@@ -37,7 +37,7 @@ public class BedDetailsServiceImpl extends ServiceImpl<BedDetailsMapper, BedDeta
     private CustomerMapper customerMapper;
 
     @Override
-    public ResultVo<Page<BedDetailsVo>> listBedDetailsVoPage(BedDetailsDTO bedDetailsDTO) {
+    public ResultVo<Page<BedDetailsVo>> listBedDetailsVoPage(BedDetailsDTO bedDetailsDTO) throws Exception {
         Page<BedDetailsVo> page = new Page<>(bedDetailsDTO.getPageSize(), 6);
         bedDetailsMapper.selectBedDetailsVo(page, bedDetailsDTO);
         return ResultVo.ok(page);
