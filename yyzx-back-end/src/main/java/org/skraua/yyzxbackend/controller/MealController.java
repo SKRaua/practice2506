@@ -7,6 +7,7 @@ import org.skraua.yyzxbackend.utils.ResultVo;
 import org.skraua.yyzxbackend.vo.MealVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +32,7 @@ public class MealController {
     @Autowired
     private MealService mealService;
 
-    @PostMapping("/listMealPage")
+    @GetMapping("/listMealPage")
     @ApiOperation("分页膳食查询 根据星期，类型（1早餐，2午餐，3晚餐）")
     public ResultVo<Page<MealVo>> listMealPage(MealDTO mealDTO) throws Exception {
         return mealService.listMealVoPage(mealDTO);

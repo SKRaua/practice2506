@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.skraua.yyzxbackend.mapper.FoodMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="Room">
+        <id column="id" property="id" />
+        <result column="food_name" property="foodName" />
+        <result column="food_type" property="foodType" />
+        <result column="price" property="price" />
+        <result column="is_halal" property="isHalal" />
+        <result column="food_img" property="foodImg" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List"> id, food_name, food_type, price, is_halal, food_img</sql>
+
+</mapper>

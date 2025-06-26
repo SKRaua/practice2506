@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+/**
+ * @author Zhou Xinyang
+ * @date 2025/06/25
+ * @description
+ */
 @Service
 public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements MealService {
 

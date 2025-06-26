@@ -15,6 +15,11 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+/**
+ * @author Zhou Xinyang
+ * @date 2025/06/25
+ * @description
+ */
 @Service
 public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements RoomService {
     @Autowired

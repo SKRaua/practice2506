@@ -38,9 +38,6 @@
             <if test="mealType != null and mealType != ''">
             AND m.meal_type = #{mealType}
             </if>
-            <!-- <if test="true">
-            AND meal.is_deleted = 0
-            </if> -->
         </where>
     </select>
     <!-- ORDER BY b.bed_details DESC -->
