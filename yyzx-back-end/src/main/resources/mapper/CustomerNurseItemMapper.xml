@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.skraua.yyzxbackend.mapper.CustomerNurseItemMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="CustomerNurseItem">
+        <id column="id" property="id" />
+        <id column="item_id" property="itemId" />
+        <result column="custormer_id" property="customerId" />
+        <result column="level_id" property="levelId" />
+        <result column="nurse_number" property="nurseNumber" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="buy_time" property="buyTime" />
+        <result column="maturity_time" property="maturityTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List"> id, item_id, custormer_id, level_id, 
+    nurse_number, is_deleted, buy_time, maturity_time</sql>
+
+    <select id="selectPageVo" resultType="CustomerNurseItemVo"> 
+    SELECT
+        cni.id,
+        cni.item_id AS itemId,
+        cni.custormer_id AS customerId, -- vo无法使用mp的TableField映射
+        cni.level_id AS levelId,
+        cni.nurse_number AS nurseNumber,
+        cni.is_deleted AS isDeleted,
+        cni.buy_time AS buyTime,
+        cni.maturity_time AS maturityTime,
+        c.customer_name AS customerName,
+        nc.serial_number AS serialNumber,
+        nc.nursing_name AS nursingName,
+        nc.service_price AS servicePrice
+    FROM
+        customernurseitem cni
+        LEFT JOIN customer c ON cni.custormer_id = c.id
+        LEFT JOIN nursecontent nc ON cni.item_id = nc.id
+        <where>
+            cni.is_deleted = 0
+            <if test="customerId != null">
+            AND cni.custormer_id = #{customerId}
+            </if>
+        </where>
+    ORDER BY c.customer_name ASC
+    </select>
+</mapper>
