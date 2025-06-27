@@ -33,15 +33,15 @@ public class BedDetailsController {
     @Autowired
     private BedDetailsService bedDetailsService;
 
-    @GetMapping("/listBedDetailsVoPage")
+    @GetMapping("/listPage")
     @ApiOperation("床位详细列表动态查询")
-    public ResultVo<Page<BedDetailsVo>> listBedDetailsVoPage(BedDetailsDTO bedDetailsDTO) throws Exception {
-        return bedDetailsService.listBedDetailsVoPage(bedDetailsDTO);
+    public ResultVo<Page<BedDetailsVo>> listPage(BedDetailsDTO bedDetailsDTO) throws Exception {
+        return bedDetailsService.listPage(bedDetailsDTO);
     }
 
-    @PostMapping("/updateBedDetails")
+    @PostMapping("/update")
     @ApiOperation("修改床位详情信息 - 只能修改床位的结束时间")
-    public ResultVo<Void> updateBedDetails(BedDetails bedDetails) throws Exception {
+    public ResultVo<Void> update(BedDetails bedDetails) throws Exception {
         bedDetailsService.updateById(bedDetails);
         return ResultVo.ok("修改成功");
     }
@@ -52,9 +52,9 @@ public class BedDetailsController {
         return bedDetailsService.exchangeBed(exchangeDTO);
     }
 
-    @GetMapping("/delBedDetails")
-    @ApiOperation("删除记录")
-    public ResultVo<Void> delBedDetails(Integer id) throws Exception {
+    @GetMapping("/remove")
+    @ApiOperation("移除记录")
+    public ResultVo<Void> remove(Integer id) throws Exception {
         bedDetailsService.removeById(id);
         return ResultVo.ok("删除成功");
     }

@@ -14,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @description
  */
 public interface MealService extends IService<Meal> {
-    public ResultVo<Page<MealVo>> listMealVoPage(MealDTO mealDTO) throws Exception;
+    public ResultVo<Page<MealVo>> listPage(MealDTO mealDTO) throws Exception;
 }

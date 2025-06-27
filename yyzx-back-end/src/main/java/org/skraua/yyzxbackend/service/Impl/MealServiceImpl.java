@@ -24,7 +24,7 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements Me
     private MealMapper mealMapper;
 
     @Override
-    public ResultVo<Page<MealVo>> listMealVoPage(MealDTO mealDTO) throws Exception {
+    public ResultVo<Page<MealVo>> listPage(MealDTO mealDTO) throws Exception {
         Page<MealVo> page = new Page<>(mealDTO.getPageSize(), 6);
         mealMapper.selectMealVo(page, mealDTO.getWeekDay(), mealDTO.getMealType());
         return ResultVo.ok(page);

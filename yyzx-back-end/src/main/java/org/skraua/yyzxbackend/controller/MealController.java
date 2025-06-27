@@ -32,29 +32,29 @@ public class MealController {
     @Autowired
     private MealService mealService;
 
-    @GetMapping("/listMealPage")
+    @GetMapping("/listPage")
     @ApiOperation("分页膳食查询 根据星期，类型（1早餐，2午餐，3晚餐）")
-    public ResultVo<Page<MealVo>> listMealPage(MealDTO mealDTO) throws Exception {
-        return mealService.listMealVoPage(mealDTO);
+    public ResultVo<Page<MealVo>> listPage(MealDTO mealDTO) throws Exception {
+        return mealService.listPage(mealDTO);
     }
 
-    @PostMapping("/addMeal")
+    @PostMapping("/add")
     @ApiOperation("添加膳食")
-    public ResultVo<Void> addMeal(Meal meal) throws Exception {
+    public ResultVo<Void> add(Meal meal) throws Exception {
         mealService.save(meal);
         return ResultVo.ok("添加成功");
     }
 
-    @PostMapping("/updateMeal")
+    @PostMapping("/update")
     @ApiOperation("修改膳食")
-    public ResultVo<Void> updateMeal(Meal meal) throws Exception {
+    public ResultVo<Void> update(Meal meal) throws Exception {
         mealService.updateById(meal);
         return ResultVo.ok("修改成功");
     }
 
-    @PostMapping("/removeMeal")
+    @PostMapping("/remove")
     @ApiOperation("删除膳食")
-    public ResultVo<Void> removeMeal(Meal meal) throws Exception {
+    public ResultVo<Void> remove(Meal meal) throws Exception {
         mealService.removeById(meal);
         return ResultVo.ok("删除成功");
     }
