@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import io.swagger.annotations.Api;
@@ -55,6 +56,13 @@ public class CustomerNurseItemController {
         return ResultVo.ok("删除成功");
     }
 
+    @PostMapping("/delete")
+    @ApiOperation("删除客户护理项目")
+    public ResultVo<Void> remove(Integer id) throws Exception {
+        customerNurseItemService.delete(id);
+        return ResultVo.ok("移除成功");
+    }
+
     @PostMapping("/enewNurseItem")
     @ApiOperation("客户续费")
     public ResultVo<Void> enewNurseItem(CustomerNurseItem customerNurseItem) throws Exception {
@@ -65,14 +73,7 @@ public class CustomerNurseItemController {
     @GetMapping("/isIncludesItemCustomer")
     @ApiOperation("用户是否已配置某个项目")
     public ResultVo<Void> isIncludesItemCustomer(Integer customerId, Integer itemId) throws Exception {
-        // TODO service 层未实现此方法，待完善
-        throw new UnsupportedOperationException("Unimplemented method 'isIncludesItemCustomer'");
+        return customerNurseItemService.isIncludesItemCustomer(customerId, itemId);
     }
 
-    @PostMapping("/remove")
-    @ApiOperation("移除客户护理项目")
-    public ResultVo<Void> remove(Integer id) throws Exception {
-        customerNurseItemService.removeById(id);
-        return ResultVo.ok("移除成功");
-    }
 }

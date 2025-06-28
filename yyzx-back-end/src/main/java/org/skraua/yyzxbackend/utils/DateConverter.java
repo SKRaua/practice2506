@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 import org.springframework.core.convert.converter.Converter;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.core.convert.converter.Converter;
  * @date 2025/06/19
  * @description 日期转换工具类
  */
+@Component
 public class DateConverter implements Converter<String, Date> {
 
     private static final List<String> FORMATS = new ArrayList<>();

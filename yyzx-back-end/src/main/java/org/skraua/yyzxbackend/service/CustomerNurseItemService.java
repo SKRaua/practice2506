@@ -22,6 +22,12 @@ public interface CustomerNurseItemService extends IService<CustomerNurseItem> {
     // 添加客户护理项目信息
     public ResultVo<Void> add(List<CustomerNurseItem> customerNurseItems) throws Exception;
 
+    // 根据级别删除护理项目
+    public ResultVo<Void> delLevelAndItem(Integer levelId, Integer customerId) throws Exception;
+
     // 删除客户护理项目信息
-    public ResultVo<Void> delLevelAndItem(Integer levelId,Integer customerId) throws Exception;
+    public ResultVo<Void> delete(Integer id) throws Exception;
+
+    // 用户是否已配置某个项目
+    public ResultVo<Void> isIncludesItemCustomer(Integer customerId, Integer itemId) throws Exception;
 }

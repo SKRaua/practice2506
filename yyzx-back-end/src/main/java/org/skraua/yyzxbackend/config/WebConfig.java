@@ -1,5 +1,6 @@
 package org.skraua.yyzxbackend.config;
 
+import org.skraua.yyzxbackend.utils.DateConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.lang.NonNull;
@@ -27,7 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(@NonNull FormatterRegistry registry) {
         // 添加自定义的日期格式化器
-        WebMvcConfigurer.super.addFormatters(registry);
+        registry.addConverter(new DateConverter());
     }
 }
 

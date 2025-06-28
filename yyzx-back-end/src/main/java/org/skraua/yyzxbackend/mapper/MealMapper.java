@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
  * @description MealMapper
  */
 public interface MealMapper extends BaseMapper<Meal> {
-    Page<MealVo> selectMealVo(@Param("page") Page<MealVo> page,
+    Page<MealVo> selectPageVo(@Param("page") Page<MealVo> page,
             @Param("weekDay") String weekDay,
             @Param("mealType") Integer mealType) throws Exception;
 }

@@ -13,6 +13,7 @@ import org.skraua.yyzxbackend.vo.CustomerNurseItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -82,6 +83,31 @@ public class CustomerNurseItemServiceImpl extends ServiceImpl<CustomerNurseItemM
             throw new Exception("修改失败");
         }
         return ResultVo.ok("修改成功");
+    }
+
+    @Override
+    public ResultVo<Void> delete(Integer id) throws Exception {
+        CustomerNurseItem customerNurseItem = new CustomerNurseItem();
+        customerNurseItem.setId(id);
+        customerNurseItem.setIsDeleted(1);
+        int update = customerNurseItemMapper.updateById(customerNurseItem);
+        if (update <= 0) {
+            throw new Exception("删除失败");
+        }
+        return ResultVo.ok("删除成功");
+    }
+
+    @Override
+    public ResultVo<Void> isIncludesItemCustomer(Integer customerId, Integer itemId) throws Exception {
+        QueryWrapper<CustomerNurseItem> qw = new QueryWrapper<>();
+        qw.eq("customer_id", customerId);
+        qw.eq("item_id", itemId);
+        qw.eq("", qw);
+        int count = customerNurseItemMapper.selectCount(qw);
+        if (count > 0) {
+            return ResultVo.fail("客户未配置该项目");
+        }
+        return ResultVo.ok("客户已配置该项目");
     }
 
 }

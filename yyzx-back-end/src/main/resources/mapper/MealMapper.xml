@@ -15,7 +15,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List"> id, week_day, food_id, meal_type, taste, is_deleted</sql>
 
-    <select id="selectMealVo" resultType="MealVo"> 
+    <select id="selectPageVo" resultType="MealVo"> 
     SELECT
         m.id,
         m.week_day,
