@@ -1,8 +1,11 @@
 package org.skraua.yyzxbackend.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.skraua.yyzxbackend.pojo.NurseContent;
+import org.skraua.yyzxbackend.vo.CustomerNurseItemVo;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 /**
  * @author Zhou Xinyang
@@ -10,4 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @description NurseContentMapper
  */
 public interface NurseContentMapper extends BaseMapper<NurseContent> {
+
+    // Page<NurseContent> selectPageVo(@Param("page") Page<CustomerNurseItemVo> page,
+    //         @Param("serialNumber") String serialNumber) throws Exception;
 }

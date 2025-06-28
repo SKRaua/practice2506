@@ -9,12 +9,12 @@ import lombok.EqualsAndHashCode;
 /**
  * @author Zhou Xinyang
  * @date 2025/06/23
- * @description NurseItemDTO
+ * @description NurseContentDTO
  */
 @Data
 @EqualsAndHashCode
-@ApiModel(value = "NurseItemDTO", description = "NurseItemDTO查询实体对象")
-public class NurseItemDTO {
+@ApiModel(value = "NurseContentDTO", description = "NurseItemDTO查询实体对象")
+public class NurseContentDTO {
     @ApiModelProperty(value = "名称")
     private String nursingName;
 
