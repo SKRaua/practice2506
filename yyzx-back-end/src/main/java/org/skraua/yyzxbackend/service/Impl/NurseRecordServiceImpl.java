@@ -10,6 +10,7 @@ import org.skraua.yyzxbackend.utils.ResultVo;
 import org.skraua.yyzxbackend.vo.NurseRecordVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -37,6 +38,7 @@ public class NurseRecordServiceImpl extends ServiceImpl<NurseRecordMapper, Nurse
         return ResultVo.ok(page);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo<Void> add(NurseRecord nurseRecord) throws Exception {
         // 生成护理记录

@@ -10,5 +10,4 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @description
  */
 public interface BedService extends IService<Bed> {
-
 }

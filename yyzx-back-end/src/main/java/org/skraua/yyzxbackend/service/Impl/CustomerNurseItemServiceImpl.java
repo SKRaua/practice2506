@@ -3,15 +3,16 @@ package org.skraua.yyzxbackend.service.Impl;
 import java.util.List;
 
 import org.skraua.yyzxbackend.dto.CustomerNurseItemDTO;
-import org.skraua.yyzxbackend.mapper.CustomerMapper;
 import org.skraua.yyzxbackend.mapper.CustomerNurseItemMapper;
 import org.skraua.yyzxbackend.pojo.Customer;
 import org.skraua.yyzxbackend.pojo.CustomerNurseItem;
 import org.skraua.yyzxbackend.service.CustomerNurseItemService;
+import org.skraua.yyzxbackend.service.CustomerService;
 import org.skraua.yyzxbackend.utils.ResultVo;
 import org.skraua.yyzxbackend.vo.CustomerNurseItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -31,7 +32,7 @@ public class CustomerNurseItemServiceImpl extends ServiceImpl<CustomerNurseItemM
     private CustomerNurseItemMapper customerNurseItemMapper;
 
     @Autowired
-    private CustomerMapper customerMapper;
+    private CustomerService customerService;
 
     @Override
     public ResultVo<Page<CustomerNurseItemVo>> listPage(CustomerNurseItemDTO customerNurseItemDTO) throws Exception {
@@ -41,6 +42,7 @@ public class CustomerNurseItemServiceImpl extends ServiceImpl<CustomerNurseItemM
         return ResultVo.ok(page);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo<Void> add(List<CustomerNurseItem> customerNurseItems) throws Exception {
         if (customerNurseItems.size() == 0) {
@@ -52,8 +54,8 @@ public class CustomerNurseItemServiceImpl extends ServiceImpl<CustomerNurseItemM
             Customer customer = new Customer();
             customer.setId(customerNurseItems.get(0).getCustomerId());
             customer.setLevelId(customerNurseItems.get(0).getLevelId());
-            int update = customerMapper.updateById(customer);
-            if (update <= 0) {
+            boolean update = customerService.updateById(customer);
+            if (!update) {
                 throw new Exception("添加失败");
             }
         }
@@ -65,13 +67,14 @@ public class CustomerNurseItemServiceImpl extends ServiceImpl<CustomerNurseItemM
         return ResultVo.ok("护理项目配置成功");
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo<Void> delLevelAndItem(Integer levelId, Integer customerId) throws Exception {
-        // 更新护理级别为null
-        UpdateWrapper<Customer> uw1 = new UpdateWrapper<>();
-        uw1.set("level_id", null);
-        uw1.eq("id", customerId);
-        int update = customerMapper.update(null, uw1);
+        // 更新护理级别为 -1
+        Customer customer = new Customer();
+        customer.setId(customerId);
+        customer.setLevelId(-1);
+        boolean update = customerService.updateById(customer);
 
         // 删除客户当前级别的所有护理项目
         UpdateWrapper<CustomerNurseItem> uw2 = new UpdateWrapper<>();
@@ -79,12 +82,13 @@ public class CustomerNurseItemServiceImpl extends ServiceImpl<CustomerNurseItemM
         uw2.eq("customer_id", customerId);
         uw2.eq("level_id", levelId);
         int update1 = customerNurseItemMapper.update(null, uw2);
-        if (!(update1 > 0 && update > 0)) {
+        if (!(update1 > 0 && update)) {
             throw new Exception("修改失败");
         }
         return ResultVo.ok("修改成功");
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo<Void> delete(Integer id) throws Exception {
         CustomerNurseItem customerNurseItem = new CustomerNurseItem();

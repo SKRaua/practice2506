@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.skraua.yyzxbackend.dto.CustomerNurseItemDTO;
 import org.skraua.yyzxbackend.dto.NurseContentDTO;
 import org.skraua.yyzxbackend.mapper.NurseContentMapper;
 import org.skraua.yyzxbackend.mapper.NurseLevelItemMapper;
@@ -12,7 +11,6 @@ import org.skraua.yyzxbackend.pojo.NurseContent;
 import org.skraua.yyzxbackend.pojo.NurseLevelItem;
 import org.skraua.yyzxbackend.service.NurseContentService;
 import org.skraua.yyzxbackend.utils.ResultVo;
-import org.skraua.yyzxbackend.vo.CustomerNurseItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,12 +34,24 @@ public class NurseContentServiceImpl extends ServiceImpl<NurseContentMapper, Nur
     @Autowired
     private NurseLevelItemMapper nurseLevelItemMapper;
 
-    // @Override
-    // public ResultVo<Page<NurseContent>> listPage(NurseContentDTO nurseContentDTO) throws Exception {
-    //     Page<NurseContent> page = new Page<>(nurseContentDTO.getPageSize(), 6);
-    //     nurseContentDTO.
-    //     return ResultVo.ok(page);
-    // }
+    @Override
+    public ResultVo<Page<NurseContent>> listlistNurseItemPage(NurseContentDTO nurseContentDTO) throws Exception {
+        if (nurseContentDTO == null) {
+            throw new Exception("参数不得为空");
+        }
+        Page<NurseContent> p = new Page<>(nurseContentDTO.getPageSize(), 6);
+        // 查询
+        QueryWrapper<NurseContent> qw = new QueryWrapper<>();
+        if (nurseContentDTO.getNursingName() != null && nurseContentDTO.getNursingName() != "") {
+            qw.like("nursing_name", "%" + nurseContentDTO.getNursingName() + "%");
+        }
+        if (nurseContentDTO.getStatus() != null) {
+            qw.eq("status", nurseContentDTO.getStatus());
+        }
+        qw.eq("is_deleted", 0);
+        page(p, qw);
+        return ResultVo.ok(p);
+    }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -88,6 +98,7 @@ public class NurseContentServiceImpl extends ServiceImpl<NurseContentMapper, Nur
         return ResultVo.ok("更新护理项目成功");
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo<Void> delete(Integer id) throws Exception {
         NurseContent nurseContent = new NurseContent();

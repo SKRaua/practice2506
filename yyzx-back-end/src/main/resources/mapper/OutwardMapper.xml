@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "org.skraua.yyzxbackend.mapper.OutwardMapper">
+    <resultMap id="BaseResultMap" type="Outward">
+        <id column="id" property="id"/>
+        <result column="remarks" property="remarks"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="customer_id" property="customerId"/>
+        <result column="outgoing_reason" property="outgoingReason"/>
+        <result column="outgoing_time" property="outgoingTime"/>
+        <result column="expected_return_time" property="expectedReturnTime"/>
+        <result column="actual_return_time" property="actualReturnTime"/>
+        <result column="escorted" property="escorted"/>
+        <result column="relation" property="relation"/>
+        <result column="escorted_tel" property="escortedTel"/>
+        <result column="audit_status" property="auditStatus"/>
+        <result column="audit_person" property="auditPerson"/>
+        <result column="audit_time" property="auditTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,remarks,is_deleted,customer_id,outgoing_reason,outgoing_time,
+          expected_return_time,actual_return_time,escorted,relation,
+          escorted_tel,audit_status,audit_person,audit_time
+    </sql>
+
+    <select id="selectOutwardPage" resultType="OutwardVo">
+        SELECT
+            o.id,
+            o.remarks,
+            o.is_deleted,
+            o.customer_id,
+            o.outgoing_reason,
+            o.outgoing_time,
+            o.expected_return_time,
+            o.actual_return_time,
+            o.escorted,
+            o.relation,
+            o.escorted_tel,
+            o.audit_status,
+            o.audit_person,
+            o.audit_time,
+            c.customer_name,
+            u.nick_name,
+            u.phone_number
+        FROM outward o
+                 LEFT JOIN customer c ON c.id=o.customer_id
+                 LEFT JOIN `user` u ON u.id=c.user_id
+        <where> o.is_deleted=0
+            <if test="userId!=null">
+                AND c.user_id=#{userId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

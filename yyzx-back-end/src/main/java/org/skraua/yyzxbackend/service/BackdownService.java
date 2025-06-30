@@ -14,4 +14,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface BackdownService extends IService<Backdown> {
     ResultVo<Page<BackdownVo>> listPage(BackdownDTO backdownDTO) throws Exception;
+
+    // 审批退住申请
+    ResultVo<Void> examineBackdown(Backdown backdown) throws Exception;
+
+    // 撤回退住申请
+    ResultVo<Void> delete(Integer id) throws Exception;
 }

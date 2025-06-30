@@ -41,7 +41,7 @@ public class CustomerController {
     @ApiOperation("入住登记")
     public ResultVo<Void> checkIn(Customer customer) throws Exception {
         // TODO 检查
-        return customerService.addCustomer(customer);
+        return customerService.add(customer);
     }
 
     // 同理，逻辑为标记删除，并非数据库移除，改为delete方法名
@@ -49,14 +49,14 @@ public class CustomerController {
     @ApiOperation("删除客户")
     public ResultVo<Void> delete(Customer customer) throws Exception {
         // TODO 检查
-        return customerService.delCustomer(customer.getId(), customer.getBedId());
+        return customerService.delete(customer.getId(), customer.getBedId());
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/update")
     @ApiOperation("编辑客户")
-    public ResultVo<Void> edit(Customer customer) throws Exception {
+    public ResultVo<Void> update(Customer customer) throws Exception {
         // TODO 检查
-        return customerService.editCustomer(customer);
+        return customerService.update(customer);
     }
 
 }

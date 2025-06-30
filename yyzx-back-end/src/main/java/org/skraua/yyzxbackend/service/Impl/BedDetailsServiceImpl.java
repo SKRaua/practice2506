@@ -5,12 +5,12 @@ import java.util.Date;
 import org.skraua.yyzxbackend.dto.BedDetailsDTO;
 import org.skraua.yyzxbackend.dto.ExchangeDTO;
 import org.skraua.yyzxbackend.mapper.BedDetailsMapper;
-import org.skraua.yyzxbackend.mapper.BedMapper;
-import org.skraua.yyzxbackend.mapper.CustomerMapper;
 import org.skraua.yyzxbackend.pojo.Bed;
 import org.skraua.yyzxbackend.pojo.BedDetails;
 import org.skraua.yyzxbackend.pojo.Customer;
 import org.skraua.yyzxbackend.service.BedDetailsService;
+import org.skraua.yyzxbackend.service.BedService;
+import org.skraua.yyzxbackend.service.CustomerService;
 import org.skraua.yyzxbackend.utils.ResultVo;
 import org.skraua.yyzxbackend.vo.BedDetailsVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +31,10 @@ public class BedDetailsServiceImpl extends ServiceImpl<BedDetailsMapper, BedDeta
     private BedDetailsMapper bedDetailsMapper;
 
     @Autowired
-    private BedMapper bedMapper;
+    private BedService bedService;
 
     @Autowired
-    private CustomerMapper customerMapper;
+    private CustomerService customerService;
 
     @Override
     public ResultVo<Page<BedDetailsVo>> listPage(BedDetailsDTO bedDetailsDTO) throws Exception {
@@ -47,8 +47,7 @@ public class BedDetailsServiceImpl extends ServiceImpl<BedDetailsMapper, BedDeta
     @Override
     public ResultVo<Void> exchangeBed(ExchangeDTO exchangeDTO) throws Exception {
         // 查询床位是否可用
-        // QueryWrapper qw = new QueryWrapper<>();
-        Bed bed = bedMapper.selectById(exchangeDTO.getNewBedId());
+        Bed bed = bedService.getById(exchangeDTO.getNewBedId());
         if (bed.getBedStatus() != 1) {
             return ResultVo.fail("床位已占用");
         }
@@ -67,24 +66,25 @@ public class BedDetailsServiceImpl extends ServiceImpl<BedDetailsMapper, BedDeta
         newBedDetails.setEndDate(exchangeDTO.getEndDate());
         newBedDetails.setBedDetails(exchangeDTO.getNewBuilding() + "#" + bed.getBedNo());
         int insert = bedDetailsMapper.insert(newBedDetails);
+
         // 修改旧床位的状态为空闲 bed_status = 1
         Bed oldBed = new Bed();
         oldBed.setId(exchangeDTO.getOldBedId());
         oldBed.setBedStatus(1);
-        int update1 = bedMapper.updateById(oldBed);
+        boolean update1 = bedService.updateById(oldBed);
         // 修改新床位的状态为有人 bed_status = 2
         Bed newBed = new Bed();
         newBed.setId(exchangeDTO.getNewBedId());
         newBed.setBedStatus(2);
-        int update2 = bedMapper.updateById(newBed);
+        boolean update2 = bedService.updateById(newBed);
         // 修改客户信息：房间号，新床位号，楼号
         Customer customer = new Customer();
         customer.setId(exchangeDTO.getCustomerId());
         customer.setRoomNo(exchangeDTO.getNewRoomNo());
         customer.setBedId(exchangeDTO.getNewBedId());
         customer.setBuildingNo(exchangeDTO.getNewBuilding());
-        int update3 = customerMapper.updateById(customer);
-        if (!(insert > 0 && update > 0 && update1 > 0 && update2 > 0 && update3 > 0)) {
+        boolean update3 = customerService.updateById(customer);
+        if (!(insert > 0 && update > 0 && update1 && update2 && update3)) {
             throw new Exception("修改失败");
         }
         return ResultVo.ok("修改成功");

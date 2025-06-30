@@ -15,14 +15,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CustomerService extends IService<Customer> {
     // 添加用户
-    public ResultVo<Void> addCustomer(Customer customer) throws Exception;
+    public ResultVo<Void> add(Customer customer) throws Exception;
 
     // 分页查询客户信息
     public ResultVo<Page<CustomerInfoVo>> listPage(CustomerInfoDTO customerInfoDTO) throws Exception;
 
     // 删除客户信息和床位信息
-    public ResultVo<Void> delCustomer(Integer id, Integer bedId) throws Exception;
+    public ResultVo<Void> delete(Integer id, Integer bedId) throws Exception;
 
     // 修改客户信息
-    public ResultVo<Void> editCustomer(Customer customer) throws Exception;
+    public ResultVo<Void> update(Customer customer) throws Exception;
 }

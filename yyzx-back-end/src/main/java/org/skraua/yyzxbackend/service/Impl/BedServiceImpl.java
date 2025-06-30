@@ -4,7 +4,6 @@ import org.skraua.yyzxbackend.mapper.BedMapper;
 import org.skraua.yyzxbackend.pojo.Bed;
 import org.skraua.yyzxbackend.service.BedService;
 import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 /**

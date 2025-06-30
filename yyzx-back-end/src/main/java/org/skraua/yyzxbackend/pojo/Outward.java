@@ -37,16 +37,16 @@ public class Outward implements Serializable {
     private Integer customerId;
 
     @ApiModelProperty(value = "外出事由")
-    private String outgoingreason;
+    private String outgoingReason;
 
     @ApiModelProperty(value = "外出时间")
-    private Date outgoingtime;
+    private Date outgoingTime;
 
     @ApiModelProperty(value = "预计回院时间")
-    private Date expectedreturntime;
+    private Date expectedReturnTime;
 
     @ApiModelProperty(value = "实际回院时间")
-    private Date actualreturntime;
+    private Date actualReturnTime;
 
     @ApiModelProperty(value = "陪同人")
     private String escorted;
@@ -55,14 +55,14 @@ public class Outward implements Serializable {
     private String relation;
 
     @ApiModelProperty(value = "陪同人电话")
-    private String escortedtel;
+    private String escortedTel;
 
     @ApiModelProperty(value = "审批状态")
-    private Integer auditstatus;
+    private Integer auditStatus;
 
     @ApiModelProperty(value = "审批人")
-    private String auditperson;
+    private String auditPerson;
 
     @ApiModelProperty(value = "审批时间")
-    private Date audittime;
+    private Date auditTime;
 }

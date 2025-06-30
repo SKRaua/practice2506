@@ -2,11 +2,9 @@ package org.skraua.yyzxbackend.service;
 
 import java.util.List;
 
-import org.skraua.yyzxbackend.dto.CustomerNurseItemDTO;
 import org.skraua.yyzxbackend.dto.NurseContentDTO;
 import org.skraua.yyzxbackend.pojo.NurseContent;
 import org.skraua.yyzxbackend.utils.ResultVo;
-import org.skraua.yyzxbackend.vo.CustomerNurseItemVo;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -18,7 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface NurseContentService extends IService<NurseContent> {
 
-    // public ResultVo<Page<NurseContent>> listPage(NurseContentDTO nurseContentDTO) throws Exception;
+    public ResultVo<Page<NurseContent>> listlistNurseItemPage(NurseContentDTO nurseContentDTO) throws Exception;
 
     public ResultVo<List<NurseContent>> listByLevel(Integer levelId) throws Exception;
 
