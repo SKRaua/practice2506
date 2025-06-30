@@ -40,6 +40,5 @@
             </if>
         </where>
     </select>
-    <!-- ORDER BY b.bed_details DESC -->
 
 </mapper>

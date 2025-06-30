@@ -19,8 +19,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode
-@ApiModel(value = "NurseRecordsVo", description = "NurseRecordsVo视图数据对象")
-public class NurseRecordsVo implements Serializable {
+@ApiModel(value = "NurseRecordVo", description = "NurseRecordVo视图数据对象")
+public class NurseRecordVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // NurseRecord
@@ -34,7 +34,7 @@ public class NurseRecordsVo implements Serializable {
     @ApiModelProperty(value = "客户id")
     private Integer customerId;
 
-    @ApiModelProperty(value = "护理记录id")
+    @ApiModelProperty(value = "护理项目id")
     private Integer itemId;
 
     @ApiModelProperty(value = "护理时间")
@@ -51,7 +51,7 @@ public class NurseRecordsVo implements Serializable {
 
     // User
     @ApiModelProperty(value = "护理人姓名")
-    private String nickName;
+    private String nickname;
 
     @ApiModelProperty(value = "护理人电话号码")
     private String phoneNumber;

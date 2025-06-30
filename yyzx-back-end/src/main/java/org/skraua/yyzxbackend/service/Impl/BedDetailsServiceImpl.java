@@ -39,7 +39,7 @@ public class BedDetailsServiceImpl extends ServiceImpl<BedDetailsMapper, BedDeta
     @Override
     public ResultVo<Page<BedDetailsVo>> listPage(BedDetailsDTO bedDetailsDTO) throws Exception {
         Page<BedDetailsVo> page = new Page<>(bedDetailsDTO.getPageSize(), 6);
-        bedDetailsMapper.selectBedDetailsVo(page, bedDetailsDTO);
+        bedDetailsMapper.selectPageVo(page, bedDetailsDTO);
         return ResultVo.ok(page);
     }
 

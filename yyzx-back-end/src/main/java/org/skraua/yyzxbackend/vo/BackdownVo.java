@@ -57,7 +57,7 @@ public class BackdownVo implements Serializable {
 
     // Bed
     @ApiModelProperty(value = "床位详情（备注）")
-    private String bedDetails;
+    private String bedRemarks;
 
     @ApiModelProperty(value = "床位id")
     private String bedId;

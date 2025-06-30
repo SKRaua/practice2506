@@ -15,6 +15,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
  */
 public interface BedDetailsMapper extends BaseMapper<BedDetails> {
     // 分页查询
-    Page<BedDetailsVo> selectBedDetailsVo(@Param("page") Page<BedDetailsVo> page,
+    Page<BedDetailsVo> selectPageVo(@Param("page") Page<BedDetailsVo> page,
             @Param("bedDetailsDTO") BedDetailsDTO bedDetailsDTO);
 }

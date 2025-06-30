@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.skraua.yyzxbackend.mapper.BackdownMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="Backdown">
+        <id column="id" property="id" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="remarks" property="remarks" />
+        <result column="customer_id" property="customerId" />
+        <result column="retreattime" property="retreattime" />
+        <result column="retreattype" property="retreattype" />
+        <result column="retreatreason" property="retreatreason" />
+        <result column="auditstatus" property="auditstatus" />
+        <result column="auditperson" property="auditperson" />
+        <result column="audittime" property="audittime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List"> id, is_deleted, remarks, customer_id, retreattime,
+     retreattype, retreatreason, auditstatus, auditperson, audittime</sql>
+
+    <select id="selectPageVo" resultType="BackdownVo"> 
+    SELECT
+        bd.*,
+        c.customer_name,
+        c.checkin_date,
+        c.bed_id,
+        bdt.bed_details 
+    FROM
+        backdown bd,
+        USER u,
+        customer c,
+        beddetails bdt 
+        <where>
+            bd.is_deleted = 0 
+            AND bd.customer_id = c.id 
+            AND c.user_id = u.id 
+            AND c.id = bdt.customer_id 
+            AND u.id = 4
+            <if test="userId != null">
+            AND u.id = #{userId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

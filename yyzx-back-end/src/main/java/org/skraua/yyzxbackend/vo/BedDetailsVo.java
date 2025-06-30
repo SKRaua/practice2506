@@ -1,6 +1,7 @@
 package org.skraua.yyzxbackend.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -27,17 +28,23 @@ public class BedDetailsVo implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @ApiModelProperty(value = "房间号")
-    private Integer roomNo;
+    @ApiModelProperty(value = "床位起始时间")
+    private Date startDate;
 
-    @ApiModelProperty(value = "床位状态 1-空闲 2-有人 3-外出")
-    private Integer bedStatus;
+    @ApiModelProperty(value = "床位结束时间")
+    private Date endDate;
 
-    @ApiModelProperty(value = "备注")
-    private String remarks;
+    @ApiModelProperty(value = "床位详细信息")
+    private String bedDetails;
 
-    @ApiModelProperty(value = "床位号（字符串完整号码）")
-    private String BedNo;
+    @ApiModelProperty(value = "客户id")
+    private Integer customerId;
+
+    @ApiModelProperty(value = "床位id")
+    private Integer bedId;
+
+    @ApiModelProperty(value = "逻辑删除标记，（0显示，1隐藏）")
+    private Integer isDeleted;
 
     // Custmoer
     @ApiModelProperty(value = "顾客姓名")

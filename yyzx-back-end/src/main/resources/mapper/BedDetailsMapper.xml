@@ -15,7 +15,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List"> id, is_deleted, start_date, end_date, bed_details, customer_id, bed_id </sql>
 
-    <select id="selectBedDetailsVo" resultType="BedDetailsVo"> 
+    <select id="selectPageVo" resultType="BedDetailsVo"> 
     SELECT
         b.id,
         b.is_deleted,

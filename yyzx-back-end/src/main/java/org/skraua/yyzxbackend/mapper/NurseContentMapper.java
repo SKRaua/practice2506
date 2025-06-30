@@ -14,6 +14,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
  */
 public interface NurseContentMapper extends BaseMapper<NurseContent> {
 
-    // Page<NurseContent> selectPageVo(@Param("page") Page<CustomerNurseItemVo> page,
+    // Page<NurseContentVo> selectPageVo(@Param("page") Page<> page,
     //         @Param("serialNumber") String serialNumber) throws Exception;
 }
