@@ -14,8 +14,8 @@ public class ResultVo<T> {
     private T data; // 响应数据
 
     // 响应成功
-    public static ResultVo<Void> ok(String message) {
-        ResultVo<Void> resultVo = new ResultVo<>();
+    public static <T> ResultVo<T> ok(String message) {
+        ResultVo<T> resultVo = new ResultVo<>();
         resultVo.setMessage(message);
         resultVo.setFlag(true);
         return resultVo;
@@ -39,8 +39,8 @@ public class ResultVo<T> {
     }
 
     // 响应失败添加message
-    public static ResultVo<Void> fail(String message) {
-        ResultVo<Void> resultVo = new ResultVo<>();
+    public static <T> ResultVo<T> fail(String message) {
+        ResultVo<T> resultVo = new ResultVo<>();
         resultVo.setMessage(message);
         resultVo.setFlag(false);
         return resultVo;

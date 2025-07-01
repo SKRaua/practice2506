@@ -43,7 +43,7 @@ public class User implements Serializable {
     private Integer isDeleted;
 
     @ApiModelProperty(value = "真实姓名")
-    private String nickName;
+    private String nickname;
 
     @ApiModelProperty(value = "密码")
     private String password;
@@ -63,5 +63,5 @@ public class User implements Serializable {
     // 一个角色有多个菜单
     @ApiModelProperty(value = "角色菜单")
     @TableField(exist = false)
-    private List<Menu> menusList;
+    private List<Menu> menuList;
 }

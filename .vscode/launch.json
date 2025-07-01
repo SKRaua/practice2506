@@ -1,6 +1,13 @@
 {
     "configurations": [
         {
+            "command": "npm run serve",
+            "name": "npm run serve",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/yyzx-front-end",
+            "type": "node-terminal"
+        },
+        {
             "type": "java",
             "name": "Spring Boot-YyzxBackEndApplication<yyzx-back-end>",
             "request": "launch",

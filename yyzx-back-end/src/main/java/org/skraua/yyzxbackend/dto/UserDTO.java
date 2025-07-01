@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @ApiModel(value = "UserDTO", description = "UserDTO查询实体对象")
 public class UserDTO {
     @ApiModelProperty(value = "真实姓名")
-    private String nickName;
+    private String nickname;
 
     @ApiModelProperty(value = "系统角色编号，（1管理员，2健康管家）")
     private Integer roleId;
