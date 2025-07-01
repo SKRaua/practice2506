@@ -21,7 +21,7 @@ public interface OutwardService extends IService<Outward> {
     ResultVo<Void> examineOutward(Outward outward) throws Exception;
 
     // 撤销外出登记
-    ResultVo<Void> delOutward(Outward outward) throws Exception;
+    ResultVo<Void> delete(Outward outward) throws Exception;
 
     // 登记回院时间
     ResultVo<Void> updateBackTime(Outward outward) throws Exception;

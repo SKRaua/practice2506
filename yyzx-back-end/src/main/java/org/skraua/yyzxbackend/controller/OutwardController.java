@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import io.swagger.annotations.Api;
@@ -60,22 +61,22 @@ public class OutwardController {
         return outwardService.examineOutward(outward);
     }
 
-    @PostMapping("/removeOutward")
+    @PostMapping("/add")
+    @ApiOperation("添加外出申请")
+    public ResultVo<Void> add(Outward outward) throws Exception {
+        outwardService.save(outward);
+        return ResultVo.ok("添加成功");
+    }
+
+    @PostMapping("/delete")
     @ApiOperation("撤销外出申请")
-    public ResultVo<Void> removeOutward(Outward outward) throws Exception {
-        return outwardService.delOutward(outward);
+    public ResultVo<Void> delete(Outward outward) throws Exception {
+        return outwardService.delete(outward);
     }
 
     @PostMapping("/updateBackTime")
     @ApiOperation("登记回院时间")
     public ResultVo<Void> updateBackTime(Outward outward) throws Exception {
-        Outward od = outwardService.getById(outward.getId());
-        Customer cs = customerService.getById(od.getCustomerId());
-        Bed bed = new Bed();
-        bed.setId(cs.getBedId());
-        // 回院，更改床位状态
-        bed.setBedStatus(2);
-        bedService.updateById(bed);
         return outwardService.updateBackTime(outward);
     }
 

@@ -3,11 +3,11 @@ package org.skraua.yyzxbackend.service.Impl;
 import java.util.List;
 
 import org.skraua.yyzxbackend.dto.CustomerNurseItemDTO;
+import org.skraua.yyzxbackend.mapper.CustomerMapper;
 import org.skraua.yyzxbackend.mapper.CustomerNurseItemMapper;
 import org.skraua.yyzxbackend.pojo.Customer;
 import org.skraua.yyzxbackend.pojo.CustomerNurseItem;
 import org.skraua.yyzxbackend.service.CustomerNurseItemService;
-import org.skraua.yyzxbackend.service.CustomerService;
 import org.skraua.yyzxbackend.utils.ResultVo;
 import org.skraua.yyzxbackend.vo.CustomerNurseItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +31,9 @@ public class CustomerNurseItemServiceImpl extends ServiceImpl<CustomerNurseItemM
     @Autowired
     private CustomerNurseItemMapper customerNurseItemMapper;
 
+
     @Autowired
-    private CustomerService customerService;
+    private CustomerMapper customerMapper;
 
     @Override
     public ResultVo<Page<CustomerNurseItemVo>> listPage(CustomerNurseItemDTO customerNurseItemDTO) throws Exception {
@@ -54,8 +55,8 @@ public class CustomerNurseItemServiceImpl extends ServiceImpl<CustomerNurseItemM
             Customer customer = new Customer();
             customer.setId(customerNurseItems.get(0).getCustomerId());
             customer.setLevelId(customerNurseItems.get(0).getLevelId());
-            boolean update = customerService.updateById(customer);
-            if (!update) {
+            int update = customerMapper.updateById(customer);
+            if (update <= 0) {
                 throw new Exception("添加失败");
             }
         }
@@ -74,7 +75,7 @@ public class CustomerNurseItemServiceImpl extends ServiceImpl<CustomerNurseItemM
         Customer customer = new Customer();
         customer.setId(customerId);
         customer.setLevelId(-1);
-        boolean update = customerService.updateById(customer);
+        int update = customerMapper.updateById(customer);
 
         // 删除客户当前级别的所有护理项目
         UpdateWrapper<CustomerNurseItem> uw2 = new UpdateWrapper<>();
@@ -82,7 +83,7 @@ public class CustomerNurseItemServiceImpl extends ServiceImpl<CustomerNurseItemM
         uw2.eq("customer_id", customerId);
         uw2.eq("level_id", levelId);
         int update1 = customerNurseItemMapper.update(null, uw2);
-        if (!(update1 > 0 && update)) {
+        if (!(update1 > 0 && update > 0)) {
             throw new Exception("修改失败");
         }
         return ResultVo.ok("修改成功");

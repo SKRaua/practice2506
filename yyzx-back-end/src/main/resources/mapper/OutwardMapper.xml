@@ -6,22 +6,22 @@
         <result column="remarks" property="remarks"/>
         <result column="is_deleted" property="isDeleted"/>
         <result column="customer_id" property="customerId"/>
-        <result column="outgoing_reason" property="outgoingReason"/>
-        <result column="outgoing_time" property="outgoingTime"/>
-        <result column="expected_return_time" property="expectedReturnTime"/>
-        <result column="actual_return_time" property="actualReturnTime"/>
+        <result column="outgoingreason" property="outgoingReason"/>
+        <result column="outgoingtime" property="outgoingTime"/>
+        <result column="expectedreturntime" property="expectedReturnTime"/>
+        <result column="actualreturntime" property="actualReturnTime"/>
         <result column="escorted" property="escorted"/>
         <result column="relation" property="relation"/>
-        <result column="escorted_tel" property="escortedTel"/>
-        <result column="audit_status" property="auditStatus"/>
-        <result column="audit_person" property="auditPerson"/>
-        <result column="audit_time" property="auditTime"/>
+        <result column="escortedtel" property="escortedTel"/>
+        <result column="auditstatus" property="auditStatus"/>
+        <result column="auditperson" property="auditPerson"/>
+        <result column="audittime" property="auditTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,remarks,is_deleted,customer_id,outgoing_reason,outgoing_time,
-          expected_return_time,actual_return_time,escorted,relation,
-          escorted_tel,audit_status,audit_person,audit_time
+        id,remarks,is_deleted,customer_id,outgoingreason,outgoingtime,
+          expectedreturntime,actualreturntime,escorted,relation,
+          escortedtel,auditstatus,auditperson,audittime
     </sql>
 
     <select id="selectOutwardPage" resultType="OutwardVo">
@@ -30,18 +30,18 @@
             o.remarks,
             o.is_deleted,
             o.customer_id,
-            o.outgoing_reason,
-            o.outgoing_time,
-            o.expected_return_time,
-            o.actual_return_time,
+            o.outgoingreason,
+            o.outgoingtime,
+            o.expectedreturntime,
+            o.actualreturntime,
             o.escorted,
             o.relation,
-            o.escorted_tel,
-            o.audit_status,
-            o.audit_person,
-            o.audit_time,
+            o.escortedtel,
+            o.auditstatus,
+            o.auditperson,
+            o.audittime,
             c.customer_name,
-            u.nick_name,
+            u.nickname,
             u.phone_number
         FROM outward o
                  LEFT JOIN customer c ON c.id=o.customer_id

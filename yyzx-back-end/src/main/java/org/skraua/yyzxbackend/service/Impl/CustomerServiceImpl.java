@@ -2,12 +2,11 @@ package org.skraua.yyzxbackend.service.Impl;
 
 import org.skraua.yyzxbackend.dto.CustomerInfoDTO;
 import org.skraua.yyzxbackend.mapper.BedDetailsMapper;
+import org.skraua.yyzxbackend.mapper.BedMapper;
 import org.skraua.yyzxbackend.mapper.CustomerMapper;
 import org.skraua.yyzxbackend.pojo.Bed;
 import org.skraua.yyzxbackend.pojo.BedDetails;
 import org.skraua.yyzxbackend.pojo.Customer;
-import org.skraua.yyzxbackend.service.BedDetailsService;
-import org.skraua.yyzxbackend.service.BedService;
 import org.skraua.yyzxbackend.service.CustomerService;
 import org.skraua.yyzxbackend.utils.ResultVo;
 import org.skraua.yyzxbackend.vo.CustomerInfoVo;
@@ -30,19 +29,16 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
     private CustomerMapper customerMapper;
 
     @Autowired
-    private BedDetailsService bedDetailsService;
-
-    @Autowired
     private BedDetailsMapper bedDetailsMapper;
 
     @Autowired
-    private BedService bedService;
+    private BedMapper bedMapper;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo<Void> add(Customer customer) throws Exception {
         // 查询床位是否可用
-        Bed bed = bedService.getById(customer.getBedId());
+        Bed bed = bedMapper.selectById(customer.getBedId());
         if (bed.getBedStatus() != 1) {
             return ResultVo.fail("床位已占用");
         }
@@ -60,16 +56,16 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         bedDetails.setBedDetails(customer.getBuildingNo() + "#" + bed.getBedNo());
         bedDetails.setCustomerId(customer.getId());
         bedDetails.setIsDeleted(0);// 床位生效
-        boolean insert2 = bedDetailsService.save(bedDetails);
+        int insert2 = bedDetailsMapper.insert(bedDetails);
 
         // 修改床位状态
         Bed bedUpdate = new Bed();
         bedUpdate.setId(bed.getId());
         bedUpdate.setBedStatus(2);
-        boolean update3 = bedService.updateById(bedUpdate);
+        int update3 = bedMapper.updateById(bedUpdate);
 
         // 判断是否入住成功
-        if (!(insert1 > 0 && insert2 && update3)) {
+        if (!(insert1 > 0 && insert2 > 0 && update3 > 0)) {
             throw new Exception("入住失败");
         }
         return ResultVo.ok("入住成功");
@@ -99,7 +95,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         Bed bed = new Bed();
         bed.setId(bedId);
         bed.setBedStatus(1);
-        boolean update1 = bedService.updateById(bed);
+        int update1 = bedMapper.updateById(bed);
 
         // 修改床位状态
         BedDetails bedDetails = new BedDetails();
@@ -111,7 +107,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         int update2 = bedDetailsMapper.update(bedDetails, updateWrapper);
 
         // 判断是否删除成功
-        if (!(update == 0 || update1 || update2 == 0)) {
+        if (!(update > 0 && update1 > 0 && update2 > 0)) {
             throw new Exception("删除失败");
         }
         return ResultVo.ok("删除成功");
