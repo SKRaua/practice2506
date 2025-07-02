@@ -41,11 +41,11 @@ export default {
     login() {
       login(this.loginForm).then((res) => {
         console.log(res);
-        if (res.data.flag) {
-          sessionStorage.setItem("token", res.data.message);
+        if (res.flag) {
+          sessionStorage.setItem("token", res.message);
           setSessionStorage("user", res.data);
-            this.$store.commit("addMenus", res.data.menuList);
-          //   this.$router.push("/home");
+          this.$store.commit("addMenus", res.data.menuList);
+          this.$router.push("res.data.menuList[0].children[0]");
         } else {
           this.$message.error(res.message);
         }

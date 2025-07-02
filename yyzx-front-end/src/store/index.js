@@ -24,7 +24,7 @@ export default createStore({
   },
 
   // 修改state状态
-  mutatioms: {
+  mutations: {
     addMenus(state, param) {
       state.menus = param;
       setSessionStorage('menusList', param);
