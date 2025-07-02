@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { setSessionStorage, getSessionStorage } from '../common.js'
+import { setSessionStorage, getSessionStorage } from '@/utils/common.js'
 // , removeLocalStorage, removeSessionStorage, getNowDate, setLocalStorage, getLocalStorage 
 
 export default createStore({

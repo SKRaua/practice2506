@@ -1,8 +1,14 @@
 //导入封装号的axios @等价于/src
-import http from '@/request.request.js'
+import http from '@/request/request.js'
+
+// 查询所有用户
+export function listPage() {
+    return http.get('/user/listPage', { params: data })
+}
+
 
 //用户登录
-export function loogin(data) {
+export function login(data) {
     return http.get('/user/login', { params: data })
 }
 
@@ -26,8 +32,4 @@ export function remove(data) {
     return http.post('/user/remove', data)
 }
 
-// 查询所有用户
-export function listPage() {
-    return http.get('/user/listPage', { params: data })
-}
 

@@ -4,9 +4,19 @@
       <div class="message">SKR颐养中心</div>
       <div id="darkbannerwrap"></div>
       <form>
-        <input name="username" type="text" placeholder="用户名" />
+        <input
+          name="username"
+          v-model="loginForm.username"
+          type="text"
+          placeholder="用户名"
+        />
         <hr class="hr15" />
-        <input name="password" type="password" placeholder="密码" />
+        <input
+          name="password"
+          v-model="loginForm.password"
+          type="password"
+          placeholder="密码"
+        />
         <hr class="hr15" />
         <input type="button" value="登录" @click="login" style="width: 100%" />
         <hr class="hr20" />
@@ -15,7 +25,35 @@
   </div>
 </template>
 
-<script></script>
+<script>
+import { login } from "../api/userApi.js";
+import { setSessionStorage } from "@/utils/common.js";
+export default {
+  data() {
+    return {
+      loginForm: {
+        username: "",
+        password: "",
+      },
+    };
+  },
+  methods: {
+    login() {
+      login(this.loginForm).then((res) => {
+        console.log(res);
+        if (res.data.flag) {
+          sessionStorage.setItem("token", res.data.message);
+          setSessionStorage("user", res.data);
+            this.$store.commit("addMenus", res.data.menuList);
+          //   this.$router.push("/home");
+        } else {
+          this.$message.error(res.message);
+        }
+      });
+    },
+  },
+};
+</script>
 
 <style scoped>
 .login-bg {
