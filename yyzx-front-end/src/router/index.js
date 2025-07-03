@@ -53,6 +53,7 @@ function initRouter() {
   //添加菜单外的AddItemToLevel,ServiceBuy,UserToCustomerService路由
   appendRoutes.children.push({ path: "/nurse/addItemToLevel", component: () => import(`@/views/nurse/AddItemToLevel.vue`) });
   appendRoutes.children.push({ path: "/health/userToCustomerService", component: () => import(`@/views/health/UserToCustomerService.vue`) });
+  appendRoutes.children.push({ path: "/health/serviceBuy", component: () => import("@/views/health/ServiceBuy.vue") })
   router.addRoute(appendRoutes);
 }
 
@@ -62,7 +63,7 @@ router.beforeEach((to, from, next) => {
   console.log("to==========>", to); // /bed/bedMap
   // 判断是否登录
   let token = sessionStorage.getItem('token');
-  if (to.path == '/login') {
+  if (to.path != '/login') {
     if (token == null || token == '') {
       next('/login')
     }

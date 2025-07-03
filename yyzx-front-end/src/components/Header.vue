@@ -7,8 +7,8 @@
       />
     </div>
     <el-dropdown split-button type="default">
-      <!-- 这里原本可能想展示用户昵称，暂注释，若有需求可结合实际数据渲染 -->
-      <!-- {{user.nickname}} -->
+      <!-- 展示用户昵称，结合实际数据渲染 -->
+      {{ user.nickname }}
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item @click="logout">注销</el-dropdown-item>
