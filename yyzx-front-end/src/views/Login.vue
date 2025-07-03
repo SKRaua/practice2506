@@ -45,7 +45,10 @@ export default {
           sessionStorage.setItem("token", res.message);
           setSessionStorage("user", res.data);
           this.$store.commit("addMenus", res.data.menuList);
-          this.$router.push("res.data.menuList[0].children[0]");
+          //   this.$router.push("res.data.menuList[0].children[0].path");
+
+          const firstPath = res.data.menuList[0].children[0].path;
+          this.$router.push(firstPath);
         } else {
           this.$message.error(res.message);
         }

@@ -42,12 +42,12 @@ export default createStore({
       let path = payload.path;
       if (path) {
         // 检查当前tabs中是否已经存在相同的标签页
-        let result = state.tabs.filter((intem) => {
-          return item.path === path;
+        let result = state.tabs.filter((item) => {
+          return item.path == path;
         });
         // 判断是否存在，如果不存在就需要加入到tab中
         if (result.length == 0) {
-          if (result.tabs.length == 10) {
+          if (state.tabs.length == 10) {
             // 删除第二个标签
             state.tabs.splice(1, 1);
           }

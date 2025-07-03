@@ -9,14 +9,14 @@ const routes = [
     name: 'NotFound'
   },
   {
+    path: '/',
+    redirect: '/login'
+  },
+  {
     path: '/login',
     name: 'login',
     component: LoginView
   },
-  {
-    path: '/',
-    redirect: '/login'
-  }
 ]
 
 const router = createRouter({
@@ -24,7 +24,6 @@ const router = createRouter({
   routes
 })
 
-export default router
 
 /**
  * 初始路由信息
@@ -104,3 +103,5 @@ router.beforeEach((to, from, next) => {
   //放行
   next();
 })
+
+export default router
