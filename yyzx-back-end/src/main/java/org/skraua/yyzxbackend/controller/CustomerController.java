@@ -31,10 +31,10 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping("/listPage")
+    @GetMapping("/listCustomerInfoPage")
     @ApiOperation("分页查询客户信息")
-    public ResultVo<Page<CustomerInfoVo>> listPage(CustomerInfoDTO customerInfoDTO) throws Exception {
-        return customerService.listPage(customerInfoDTO);
+    public ResultVo<Page<CustomerInfoVo>> listCustomerInfoPage(CustomerInfoDTO customerInfoDTO) throws Exception {
+        return customerService.listCustomerInfoPage(customerInfoDTO);
     }
 
     @PostMapping("/checkIn")

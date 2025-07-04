@@ -16,7 +16,7 @@ export function del() {
 }
 
 // 审批外出
-export function examineOutward() {
+export function examineOutward(data) {
     return http.post("/outward/examineOutward", data);
 }
 

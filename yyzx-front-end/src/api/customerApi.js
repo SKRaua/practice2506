@@ -1,8 +1,8 @@
 import http from "@/request/request.js";
 
 // 分页查询
-export function listPage() {
-    return http.get("/customer/listPage", { params: data });
+export function listCustomerInfoPage(data) {
+    return http.get("/customer/listCustomerInfoPage", { params: data });
 }
 
 

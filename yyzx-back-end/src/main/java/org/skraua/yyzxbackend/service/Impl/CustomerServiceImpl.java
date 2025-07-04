@@ -72,7 +72,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
     }
 
     @Override
-    public ResultVo<Page<CustomerInfoVo>> listPage(CustomerInfoDTO customerInfoDTO) throws Exception {
+    public ResultVo<Page<CustomerInfoVo>> listCustomerInfoPage(CustomerInfoDTO customerInfoDTO) throws Exception {
         Page<CustomerInfoVo> page = new Page<>(customerInfoDTO.getPageSize(), 6);
         String customerName = customerInfoDTO.getCustomerName();
         Integer userId = customerInfoDTO.getUserId();

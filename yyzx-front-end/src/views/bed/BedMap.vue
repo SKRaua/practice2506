@@ -10,7 +10,7 @@
               <el-form :inline="true">
                 <el-form-item label="楼层：">
                   <!-- 下拉选择器，绑定 form.floor 变量，change 事件触发 findBedUsage 方法 -->
-                  <el-select v-model="form.floor" @change="findBedUsage">
+                  <el-select style="width: 120px;" v-model="form.floor" @change="findBedUsage">
                     <el-option label="一楼" value="一楼" />
                     <el-option label="二楼" value="二楼" />
                   </el-select>

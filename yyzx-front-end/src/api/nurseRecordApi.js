@@ -1,12 +1,12 @@
 import http from "@/request/request.js";
 
 // 分页查询
-export function listPage() {
+export function listNurseRecordsVo(data) {
     return http.get("/nurseRecord/listPage", { params: data });
-}    
+}
 
 // 查询外出记录
-export function queryOutwardVo() {
+export function queryOutwardVo(data) {
     return http.get("/nurseRecord/queryOutwardVo", { params: data });
 }
 

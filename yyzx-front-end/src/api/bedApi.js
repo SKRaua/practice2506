@@ -1,7 +1,7 @@
 import http from "@/request/request.js";
 
 // 查询
-export function findBed() {
+export function findBed(data) {
     return http.get("/bed/findBed", { params: data });
 }
 
@@ -11,7 +11,7 @@ export function findBedUsage(data) {
 }
 
 // 分页查询
-export function listPage() {
+export function listPage(data) {
     return http.get("/bedDetails/listPage", { params: data });
 }
 

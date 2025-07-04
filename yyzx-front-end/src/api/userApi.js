@@ -2,7 +2,7 @@
 import http from '@/request/request.js'
 
 // 查询所有用户
-export function listPage() {
+export function listPage(data) {
     return http.get('/user/listPage', { params: data })
 }
 

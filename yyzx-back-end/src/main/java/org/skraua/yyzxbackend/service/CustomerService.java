@@ -18,7 +18,7 @@ public interface CustomerService extends IService<Customer> {
     public ResultVo<Void> add(Customer customer) throws Exception;
 
     // 分页查询客户信息
-    public ResultVo<Page<CustomerInfoVo>> listPage(CustomerInfoDTO customerInfoDTO) throws Exception;
+    public ResultVo<Page<CustomerInfoVo>> listCustomerInfoPage(CustomerInfoDTO customerInfoDTO) throws Exception;
 
     // 删除客户信息和床位信息
     public ResultVo<Void> delete(Integer id, Integer bedId) throws Exception;

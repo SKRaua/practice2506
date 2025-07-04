@@ -1,7 +1,7 @@
 import http from "@/request/request.js";
 
 // 分页查询
-export function listPage() {
+export function listPage(data) {
     return http.get("/backdown/listPage", { params: data });
 }
 
