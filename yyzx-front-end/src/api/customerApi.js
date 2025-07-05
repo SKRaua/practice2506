@@ -12,12 +12,12 @@ export function checkIn(data) {
 }
 
 //修改
-export function update(data) {
+export function updateCustomer(data) {
     return http.post('/customer/update', data)
 }
 
 //删除
-export function del(data) {
+export function delCustomer(data) {
     return http.post('/customer/delete', data)
 }
 
