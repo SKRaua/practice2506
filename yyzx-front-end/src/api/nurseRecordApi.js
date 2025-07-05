@@ -11,13 +11,13 @@ export function queryOutwardVo(data) {
 }
 
 //添加
-export function add(data) {
+export function addNurseRecord(data) {
     return http.post('/nurseRecord/add', data)
 }
 
 
 //移除
-export function del(data) {
+export function delNurseRecord(data) {
     return http.post('/nurseRecord/delete', data)
 }
 

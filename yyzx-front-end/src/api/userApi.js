@@ -2,7 +2,7 @@
 import http from '@/request/request.js'
 
 // 查询所有用户
-export function listPage(data) {
+export function listUserPage(data) {
     return http.get('/user/listPage', { params: data })
 }
 
@@ -18,17 +18,17 @@ export function findUserPage(data) {
 }
 
 //添加系统用户信息
-export function add(data) {
+export function addUser(data) {
     return http.post('/user/add', data)
 }
 
 //修改系统用户信息
-export function update(data) {
+export function updateUser(data) {
     return http.post('/user/update', data)
 }
 
 //删除系统用户信息
-export function remove(data) {
+export function removeUser(data) {
     return http.post('/user/remove', data)
 }
 

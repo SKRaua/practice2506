@@ -5,7 +5,7 @@
         <div>
           <el-row :gutter="30">
             <el-col :span="7">
-              <el-input placeholder="客户名称" v-model="queryParams.customerName" @clear="query" clearable size="large">
+              <el-input placeholder="名称" v-model="queryParams.itemName" @clear="query" clearable size="large">
                 <template #append>
                   <el-button type="info" @click="query" style="color:black">查询</el-button>
                 </template>
@@ -25,18 +25,26 @@
       <el-divider style="margin:0"></el-divider>
       <el-main>
         <div>
+          <el-row class="mb-4">
+            <el-button :class="[{ activeBtn: btnFlag }]" style="border: 1px white solid;margin-left: 0px"
+              @click="enable">启用</el-button>
+            <el-button :class="[{ activeBtn: !btnFlag }]" style="border: 1px white solid;margin-left: 0px"
+              @click="disable">停用</el-button>
+          </el-row>
+        </div>
+        <div>
           <!-- 表格 -->
-          <el-table :data="preferenceList" style="width: 100% ;color:black;" stripe>
+          <el-table :data="nurseItemList" style="width: 100% ;color:black;" stripe>
             <el-table-column align="center" type="index" :index="indexMethod" label="序号" width="60" />
-            <el-table-column align="center" prop="customerName" label="客户名称" width="120" />
-            <el-table-column align="center" prop="customerSex" label="性别" width="60">
-              <template #default="scope">{{ scope.row.customerSex == 0 ? '男' : '女' }}</template>
+            <el-table-column align="center" prop="serialNumber" label="编号" width="120" />
+            <el-table-column align="center" prop="nursingName" label="名称" width="120" />
+            <el-table-column align="center" prop="servicePrice" label="价格" width="120" />
+            <el-table-column align="center" prop="executionCycle" label="执行周次" width="120" />
+            <el-table-column align="center" prop="executionTimes" label="执行次数" width="120" />
+            <el-table-column align="center" prop="message" label="描述" width="120" />
+            <el-table-column align="center" prop="status" label="状态" width="120">
+              <template #default="scope">{{ scope.row.status == 1 ? '启用' : '停用' }}</template>
             </el-table-column>
-            <el-table-column align="center" prop="customerAge" label="年龄" width="120" />
-            <el-table-column align="center" prop="preferences" label="喜好" width="300" />
-            <el-table-column align="center" prop="attention" label="注意事项" width="200" />
-            <el-table-column align="center" prop="remark" label="备注" width="200" />
-
             <el-table-column align="center" fixed="right" label="操作" width="220">
               <template #default="scope">
                 <el-button type="primary" icon="Edit" link @click="edit(scope.row)">修改</el-button>
@@ -67,22 +75,37 @@
       <el-divider border-style="double" style="margin:0;" />
       <el-form label-position="right" label-width="auto" style="max-width:380px;margin:20px auto"
         class="demo-form-inline" ref="itemForm" :model="dialog.item" :rules="rules">
-        <el-form-item label="客户姓名：" prop="customerId">
-          <el-select v-model="dialog.item.customerId" style="width:320px" placeholder="客户姓名：">
-            <el-option v-for="item in customerList" :label="item.customerName" :value="item.id" />
+        <el-form-item label="编号：" prop="serialNumber">
+          <el-input v-model="dialog.item.serialNumber" />
+        </el-form-item>
+        <el-form-item label="名称：" prop="nursingName">
+          <el-input v-model="dialog.item.nursingName" />
+        </el-form-item>
+        <el-form-item label="价格：" prop="servicePrice">
+          <el-input v-model="dialog.item.servicePrice" />
+        </el-form-item>
+
+        <el-form-item label="执行周期：" prop="executionCycle">
+          <el-select v-model="dialog.item.executionCycle" style="width:320px" placeholder="执行周期：">
+            <el-option label="每天" value="每天" />
+            <el-option label="每周" value="每周" />
+            <el-option label="每月" value="每月" />
           </el-select>
         </el-form-item>
-        <el-form-item label="喜好：" prop="preferences">
-          <el-input v-model="dialog.item.preferences" />
-        </el-form-item>
-        <el-form-item label="提示：" prop="attention">
-          <el-input v-model="dialog.item.attention" />
+
+        <el-form-item label="执行次数：" prop="executionTimes">
+          <el-input v-model="dialog.item.executionTimes" />
         </el-form-item>
 
-        <el-form-item label="备注：" prop="remark">
-          <el-input v-model="dialog.item.remark" />
+        <el-form-item label="描述： " prop="message">
+          <el-input v-model="dialog.item.message" />
         </el-form-item>
 
+        <el-form-item label="状态：" prop="status">
+          <el-select v-model="dialog.item.status" style="width:320px" placeholder="状态">
+            <el-option v-for="item in dialog.statusArr" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-form-item>
       </el-form>
       <el-divider border-style="double" style="margin:0;" />
       <template #footer>
@@ -97,12 +120,11 @@
 
 <script>
 import {
-  addPreference,
-  listPreferencePage,
-  updatePreference,
-  removePreference
-} from "@/api/preferenceApi.js";
-import { getKhxxList } from "@/api/customerApi.js";
+  addNurseItem,
+  listNurseContentByLevel,
+  updateNurseContent,
+  delNurseContent
+} from "@/api/nurseContentApi.js";
 export default {
   computed: {
     indexMethod() {
@@ -117,17 +139,38 @@ export default {
         tops: "", //模态框标题,
         item: {
           id: "",
-          customerId: "",
-          customerName: "",
-          customerSex: "",
-          customerAge: "",
-          preferences: "",
-          attention: "",
-          remark: "",
-          isDeleted: 0
-        }
+          serialNumber: "",
+          nursingName: "",
+          servicePrice: "",
+          message: "",
+          executionCycle: "",
+          executionTimes: "",
+          status: "" //状态 1：启用；2：停用
+        },
+        statusArr: [
+          {
+            value: 1,
+            label: "启用"
+          },
+          {
+            value: 2,
+            label: "停用"
+          }
+        ]
       },
-
+      //校验规则
+      rules: {
+        serialNumber: [
+          { required: true, message: "请输入编号", trigger: "blur" }
+        ],
+        nursingName: [
+          { required: true, message: "请输入名称", trigger: "blur" }
+        ],
+        servicePrice: [
+          { required: true, message: "请输入价格", trigger: "blur" }
+        ],
+        status: [{ required: true, message: "请选择状态", trigger: "change" }]
+      },
       //分页属性封装
       page: {
         total: 0,
@@ -137,28 +180,42 @@ export default {
       },
       btnFlag: true,
       queryParams: {
-        customerName: "",
+        status: "1", //查询默认状态1 -启用
+        itemName: "",
         pageSize: "1" //默认第一页
       },
-      preferenceList: [],
-      customerList: [],
-      //查询条件封装--客户
-      condition: {
-        customerName: "",
-        pageSize: "1" //默认第一页
-      },
+      nurseItemList: []
     };
   },
   mounted() {
-    this.getKhxxList();
-    this.getPreferenceList();
+    this.getNurseItemList();
   },
   methods: {
     //点击查询
     query() {
       this.queryParams.pageSize = "1"; //回到第一页
-      this.getPreferenceList();
-      this.getKhxxList();
+      this.getNurseItemList();
+    },
+    //点击启用
+    enable() {
+      this.btnFlag = true;
+      this.queryParams.status = "1"; //1-启用
+      this.queryParams.pageSize = "1"; //回到第一页
+      this.getNurseItemList();
+    },
+    //点击停用
+    disable() {
+      this.btnFlag = false;
+      this.queryParams.pageSize = "1"; //2-停用
+      this.queryParams.status = "2"; //0-生效床位信息
+      this.getNurseItemList();
+    },
+    //选中页码
+    handleCurrentChange(curPage) {
+      this.page.currentPag = curPage;
+      this.queryParams.pageSize = curPage; //参数pageSize是服务端接收页码参数名
+      //重新渲染表格
+      this.getNurseItemList();
     },
     //点击修改
     edit(row) {
@@ -167,17 +224,18 @@ export default {
       //初始化模态框数据
       this.$nextTick(() => {
         this.dialog.item.id = row.id;
-        this.dialog.item.customerName = row.customerName;
-        this.dialog.item.customerSex = row.customerSex;
-        this.dialog.item.customerAge = row.customerAge;
-        this.dialog.item.preferences = row.preferences;
-        this.dialog.item.attention = row.attention;
-        this.dialog.item.remark = row.remark;
+        this.dialog.item.serialNumber = row.serialNumber;
+        this.dialog.item.nursingName = row.nursingName;
+        this.dialog.item.servicePrice = row.servicePrice;
+        this.dialog.item.message = row.message;
+        this.dialog.item.executionCycle = row.executionCycle;
+        this.dialog.item.executionTimes = row.executionTimes;
+        this.dialog.item.status = row.status;
       });
     },
     //点击添加按钮
     addItem() {
-      this.dialog.tops = "添加膳食管理";
+      this.dialog.tops = "添加护理项目";
       this.dialog.dialogVisible = true;
     },
     handleClose() {
@@ -197,26 +255,25 @@ export default {
         if (valid) {
           //通过id判断是添加还是编辑
           if (this.dialog.item.id == null || this.dialog.item.id == "") {
-            addPreference(this.dialog.item).then(res => {
+            addNurseItem(this.dialog.item).then(res => {
               if (res.flag) {
                 this.$message.success(res.message);
                 //刷新数据表格(回到最初查询状态)
                 this.queryParams.status = "1";
                 this.queryParams.pageSize = "1"; //回到第一页
-                this.queryParams.customerName = "";
-                this.getPreferenceList();
-                this.getKhxxList();
+                this.queryParams.itemName = "";
+                this.getNurseItemList();
                 this.handleClose(); //关闭模态框
               } else {
                 this.$message.error(res.message);
               }
             });
           } else {
-            updatePreference(this.dialog.item).then(res => {
+            updateNurseContent(this.dialog.item).then(res => {
               if (res.flag) {
                 this.$message.success(res.message);
                 //刷新数据表格
-                this.getPreferenceList();
+                this.getNurseItemList();
                 this.handleClose(); //关闭模态框
               } else {
                 this.$message.error(res.message);
@@ -236,11 +293,11 @@ export default {
         type: "warning"
       })
         .then(() => {
-          removePreference({ id: id }).then(res => {
+          delNurseContent({ id: id }).then(res => {
             if (res.flag) {
               this.$message.success(res.message);
               //重载表格
-              this.getPreferenceList();
+              this.getNurseItemList();
             } else {
               this.$message.error(res.message);
             }
@@ -249,19 +306,13 @@ export default {
         .catch(() => { });
     },
     //api-查询护理项目(分页)
-    getPreferenceList() {
-      listPreferencePage(this.queryParams).then(res => {
-        this.preferenceList = res.data.records;
+    getNurseItemList() {
+      listNurseContentByLevel(this.queryParams).then(res => {
+        this.nurseItemList = res.data.records;
         this.page.total = res.data.total; //总记录数
         this.page.pageSize = res.data.size; //每页显示条数
         this.page.currentPag = res.data.current; //当前页码
         this.page.pagCount = res.data.pages; //总页数
-      });
-    },
-    //api-查询客户信息列表-分页
-    getKhxxList() {
-      getKhxxList(this.condition).then(res => {
-        this.customerList = res.data.records;
       });
     }
   }

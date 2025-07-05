@@ -4,19 +4,9 @@
       <div class="message">SKR颐养中心</div>
       <div id="darkbannerwrap"></div>
       <form>
-        <input
-          name="username"
-          v-model="loginForm.username"
-          type="text"
-          placeholder="用户名"
-        />
+        <input name="username" v-model="loginForm.username" type="text" placeholder="用户名" />
         <hr class="hr15" />
-        <input
-          name="password"
-          v-model="loginForm.password"
-          type="password"
-          placeholder="密码"
-        />
+        <input name="password" v-model="loginForm.password" type="password" placeholder="密码" />
         <hr class="hr15" />
         <input type="button" value="登录" @click="login" style="width: 100%" />
         <hr class="hr20" />
@@ -67,6 +57,7 @@ export default {
   /* 裁剪超出边框内容，不显示滚动条 */
   overflow: hidden;
 }
+
 .login {
   margin: 200px auto 0 auto;
   min-height: 420px;
@@ -76,6 +67,7 @@ export default {
   border-radius: 4px;
   box-sizing: border-box;
 }
+
 .login .message {
   margin: 10px 0 0 -58px;
   padding: 18px 10px 18px 60px;
@@ -105,6 +97,7 @@ select {
   padding: 0 10px;
   box-sizing: border-box;
 }
+
 /* 鼠标点击或者tab获得焦点时，蓝框 */
 .login input[type="email"]:focus,
 .login input[type="file"]:focus,
@@ -147,6 +140,7 @@ select:focus {
   padding: 0;
   width: 100%;
 }
+
 .login hr .hr20 {
   height: 20px;
   border: none;

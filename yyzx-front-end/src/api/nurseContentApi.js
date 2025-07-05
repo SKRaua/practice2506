@@ -2,17 +2,17 @@ import http from "@/request/request.js";
 
 
 //添加
-export function listByLevel(data) {
+export function listNurseContentByLevel(data) {
     return http.get('/nurseContent/listByLevel', { params: data })
 }
 
 //修改
-export function update(data) {
+export function updateNurseContent(data) {
     return http.post('/nurseContent/update', data)
 }
 
 //删除
-export function del(data) {
+export function delNurseContent(data) {
     return http.post('/nurseLevel/delete', data)
 }
 

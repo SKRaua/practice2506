@@ -11,7 +11,7 @@ export function findBedUsage(data) {
 }
 
 // 分页查询
-export function listPage(data) {
+export function listBedDetailsPage(data) {
     return http.get("/bedDetails/listPage", { params: data });
 }
 
@@ -22,12 +22,12 @@ export function exchangeBed(data) {
 }
 
 //修改
-export function update(data) {
+export function updateBedDetails(data) {
     return http.post('/bedDetails/update', data)
 }
 
 //移除
-export function remove(data) {
+export function removeBedDetails(data) {
     return http.post('/bedDetails/remove', data)
 }
 

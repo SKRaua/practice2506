@@ -35,7 +35,7 @@ public class NurseContentServiceImpl extends ServiceImpl<NurseContentMapper, Nur
     private NurseLevelItemMapper nurseLevelItemMapper;
 
     @Override
-    public ResultVo<Page<NurseContent>> listlistNurseItemPage(NurseContentDTO nurseContentDTO) throws Exception {
+    public ResultVo<Page<NurseContent>> listNurseItemPage(NurseContentDTO nurseContentDTO) throws Exception {
         if (nurseContentDTO == null) {
             throw new Exception("参数不得为空");
         }

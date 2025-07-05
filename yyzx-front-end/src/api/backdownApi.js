@@ -1,13 +1,13 @@
 import http from "@/request/request.js";
 
 // 分页查询
-export function listPage(data) {
+export function listBackdownPage(data) {
     return http.get("/backdown/listPage", { params: data });
 }
 
 
 //添加
-export function add(data) {
+export function addBackdown(data) {
     return http.post('/backdown/add', data)
 }
 

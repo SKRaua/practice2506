@@ -7,17 +7,17 @@ export function listPage(data) {
 
 
 //添加
-export function add(data) {
+export function addMeal(data) {
     return http.post('/meal/add', data)
 }
 
 //修改
-export function update(data) {
+export function updateMeal(data) {
     return http.post('/meal/update', data)
 }
 
 //移除
-export function remove(data) {
+export function removeMeal(data) {
     return http.post('/meal/remove', data)
 }
 

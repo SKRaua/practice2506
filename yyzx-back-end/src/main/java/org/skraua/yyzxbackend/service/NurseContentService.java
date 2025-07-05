@@ -16,7 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface NurseContentService extends IService<NurseContent> {
 
-    public ResultVo<Page<NurseContent>> listlistNurseItemPage(NurseContentDTO nurseContentDTO) throws Exception;
+    public ResultVo<Page<NurseContent>> listNurseItemPage(NurseContentDTO nurseContentDTO) throws Exception;
 
     public ResultVo<List<NurseContent>> listByLevel(Integer levelId) throws Exception;
 

@@ -1,7 +1,7 @@
 import http from "@/request/request.js";
 
 // 分页查询
-export function listPage(data) {
+export function listCustomerNurseItemPage(data) {
     return http.get("/customerNurseItem/listPage", { params: data });
 }
 
@@ -16,7 +16,7 @@ export function addItemToCustomer(data) {
 }
 
 // 删除
-export function del(data) {
+export function delNurseItem(data) {
     return http.post("/customerNurseItem/delete", data);
 }
 

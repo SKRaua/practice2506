@@ -1,17 +1,17 @@
 import http from "@/request/request.js";
 
 // 分页查询
-export function listPage() {
+export function listOutwardPage() {
     return http.get("/outward/listPage", { params: data });
 }
 
 // 添加请求
-export function add() {
+export function addOutward() {
     return http.post("/outward/add", data);
 }
 
 // 删除请求
-export function del() {
+export function delOutward() {
     return http.post("/outward/delete", data);
 }
 
