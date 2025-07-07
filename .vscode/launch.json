@@ -1,6 +1,20 @@
 {
     "configurations": [
         {
+            "type": "java",
+            "name": "MedicareRbBack",
+            "request": "launch",
+            "mainClass": "org.skraua.MedicareRbBack",
+            "projectName": "medicare-rb-back"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "org.skraua.App",
+            "projectName": "medicare-rb-back"
+        },
+        {
             "command": "npm run serve",
             "name": "npm run serve",
             "request": "launch",
