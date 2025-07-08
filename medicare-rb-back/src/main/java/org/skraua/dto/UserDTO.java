@@ -3,13 +3,14 @@ package org.skraua.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import org.skraua.pojo.Menu;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import javafx.scene.control.Menu;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

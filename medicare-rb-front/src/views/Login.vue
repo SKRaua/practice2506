@@ -35,9 +35,10 @@ export default {
           sessionStorage.setItem("token", res.message);
           setSessionStorage("user", res.data);
           this.$store.commit("addMenus", res.data.menuList);
+          //   this.$router.push("res.data.menuList[0].children[0].path");
 
-          // const firstPath = res.data.menuList[0].children[0].path;
-          // this.$router.push(firstPath);
+          const firstPath = res.data.menuList[0].children[0].path;
+          this.$router.push(firstPath);
         } else {
           this.$message.error(res.message);
         }
@@ -70,7 +71,7 @@ export default {
 .login .message {
   margin: 10px 0 0 -58px;
   padding: 18px 10px 18px 60px;
-  background: #44aff0;
+  background: #ec407a;
   position: relative;
   color: #fff;
   font-size: 20px;
@@ -103,7 +104,7 @@ select {
 .login input[type="password"]:focus,
 .login input[type="text"]:focus,
 select:focus {
-  border: 1px solid #44aff0;
+  border: 1px solid #ec407a;
 }
 
 /* 按钮样式 */
@@ -119,7 +120,7 @@ select:focus {
   white-space: nowrap;
   cursor: pointer;
   color: #fff;
-  background-color: #44aff0;
+  background-color: #ec407a;
   border-radius: 3px;
   border: none;
   appearance: none;

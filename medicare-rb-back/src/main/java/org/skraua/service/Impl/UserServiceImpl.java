@@ -2,9 +2,15 @@ package org.skraua.service.Impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.skraua.dto.UserDTO;
+import org.skraua.mapper.MenuMapper;
+import org.skraua.mapper.RoleMenuMapper;
 import org.skraua.mapper.UserMapper;
+import org.skraua.pojo.Menu;
+import org.skraua.pojo.RoleMenu;
 import org.skraua.pojo.User;
 import org.skraua.service.UserService;
 import org.skraua.utils.ResultVo;
@@ -29,6 +35,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private MenuMapper menuMapper;
+
+    @Autowired
+    private RoleMenuMapper roleMenuMapper;
+
     @Override
     public ResultVo<UserDTO> login(String username, String password) throws Exception {
         QueryWrapper<User> qw = new QueryWrapper<>();
@@ -36,8 +48,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         qw.eq("password", password);
         User user = getOne(qw);
         if (user != null) {
-            HashMap<String, Object> map = new HashMap<>();
+            // 根据用户角色获取当前用户的菜单
+            // 获取得到角色对应的menu_id
+            QueryWrapper<RoleMenu> listRoleQw = new QueryWrapper<>();
+            listRoleQw.eq("role_id", user.getRoleId());
+            listRoleQw.select("menu");
+            List<Integer> menuIds = roleMenuMapper.selectObjs(listRoleQw)
+                    .stream()
+                    .map(obj -> (Integer) obj)
+                    .collect(Collectors.toList()); // 管理员 
+
+            // 根据menu_id查询一级菜单列表
+            List<Menu> menus = menuMapper.selectBatchIds(menuIds); // 
+            // 查询子菜单
+            for (Menu menu : menus) {
+                QueryWrapper<Menu> listMenuQw = new QueryWrapper<>();
+                listMenuQw.eq("parent_id", menu.getId()); // 1
+                menu.setChildren(menuMapper.selectList(listMenuQw));
+            }
             UserDTO userDTO = new UserDTO();
+            userDTO.setMenuList(menus);
+
+            // 生成token
+            HashMap<String, Object> map = new HashMap<>();
             userDTO.setId(user.getId());
             userDTO.setNickname(user.getNickname());
             userDTO.setUsername(user.getUsername());

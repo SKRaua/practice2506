@@ -1,9 +1,20 @@
 //导入封装号的axios @等价于/src
 import http from '@/request/request.js'
 
+// 查询所有用户
+export function listUserPage(data) {
+    return http.get('/user/listPage', { params: data })
+}
+
+
 //用户登录
 export function login(data) {
     return http.get('/user/login', { params: data })
+}
+
+//查询系统用户信息
+export function findUserPage(data) {
+    return http.get('/user/findUserPage', { params: data })
 }
 
 //添加系统用户信息

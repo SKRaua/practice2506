@@ -1,11 +1,7 @@
 <template>
   <div class="container_tab">
     <ul class="tab_nav_box">
-      <li
-        v-for="(item, index) in $store.getters.tabs"
-        :key="item.title"
-        :class="{ active: $route.path === item.path }"
-      >
+      <li v-for="(item, index) in $store.getters.tabs" :key="item.title" :class="{ active: $route.path === item.path }">
         <router-link :to="item.path">{{ item.title }}</router-link>
         <el-icon v-if="index !== 0">
           <CloseBold @click="onCloseTabIndex(index)" />
@@ -57,6 +53,7 @@ export default {
   border-radius: 5%;
   opacity: 0.9;
 }
+
 .tab_nav_box li:hover {
   opacity: 1;
 }
@@ -78,7 +75,7 @@ export default {
 
 .tab_nav_box li.active {
   font-size: 15px;
-  background-color: #0b67b8;
+  background-color: #ec407a;
   color: white;
 }
 

@@ -20,8 +20,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  // history: createWebHistory(process.env.BASE_URL),
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(process.env.BASE_URL),
   routes
 })
 
@@ -61,7 +60,7 @@ function initRouter() {
 
 // 路由守卫，路由跳转前执行检查逻辑
 router.beforeEach((to, from, next) => {
-  console.log("to==========>", to); // /bed/bedMap
+  console.log("to==========>", to);
   // 判断是否登录
   let token = sessionStorage.getItem('token');
   if (to.path != '/login') {

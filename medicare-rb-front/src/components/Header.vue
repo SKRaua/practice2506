@@ -1,10 +1,7 @@
 <template>
   <el-header id="header">
     <div>
-      <img
-        style="width: 200px; height: 40px; margin: 20px 0 -12px"
-        src="@/assets/welcome.png"
-      />
+      <img style="width: 160px; height: 40px; margin: 20px 0 -12px" src="@/assets/welcome.png" />
     </div>
     <el-dropdown split-button type="default">
       <!-- 展示用户昵称，结合实际数据渲染 -->
@@ -56,7 +53,7 @@ export default {
   align-items: center;
 }
 
-#header > h2 {
+#header>h2 {
   color: #0b67b8;
 }
 </style>

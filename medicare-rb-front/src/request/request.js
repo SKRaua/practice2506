@@ -1,4 +1,5 @@
 import axios from 'axios'
+import qs from 'qs'
 import router from '../router'
 
 const instance = axios.create({
@@ -39,7 +40,7 @@ instance.interceptors.response.use(function (response) {
         router.push("/login")
     }
     // 这里的相应写了.data，后面就可以把前面的.data去掉
-    return response.data;
+    return response.data;//
 }, function (error) {
     // Do something with response error
     return Promise.reject(error);

@@ -35,7 +35,7 @@ function initRouter() {
   appendRoutes.component = () => import('@/views/layout/Layout.vue');
   appendRoutes.children = [];
   //从store中获取权限信息
-  console.log("store=====>", store);
+  // console.log("store=====>", store);
   let menus = store.getters.menus;
   for (let menu of menus) {
     menu.children.forEach((temp, index) => {
