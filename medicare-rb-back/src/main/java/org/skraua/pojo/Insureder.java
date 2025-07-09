@@ -2,7 +2,6 @@ package org.skraua.pojo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -57,11 +56,13 @@ public class Insureder implements Serializable {
     @ApiModelProperty(value = "住院号")
     private String inpatientNo;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "入院时间")
-    private Date admissionTime;
+    private LocalDate admissionTime;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "出院时间")
-    private Date dischargeTime;
+    private LocalDate dischargeTime;
 
     @ApiModelProperty(value = "紧急联系人")
     private String emergencyContact;

@@ -12,14 +12,6 @@
                                 </template>
                             </el-input>
                         </el-col>
-                        <el-col :span="2">
-                            <el-button type="primary" @click="openAdd" size="large">
-                                <el-icon>
-                                    <Plus />
-                                </el-icon>
-                                添加客户
-                            </el-button>
-                        </el-col>
                     </el-row>
                 </div>
             </el-header>
@@ -58,13 +50,13 @@
                                 <el-table-column align="center" prop="contactPhone" label="联系电话" width="130" />
                                 <el-table-column align="center" label="操作" width="160" fixed="right">
                                     <template #default="scope">
-                                        <el-button link size="small" @click="openEdit(scope.row)"
+                                        <el-button link size="small" @click="openDetail(scope.row)"
                                             style="color: #1890ff">
-                                            编辑
+                                            详情
                                         </el-button>
-                                        <el-button link size="small" @click="handleDelete(scope.row)"
-                                            style="color: #ff4d4f">
-                                            删除
+                                        <el-button link size="small" @click="openReimburse(scope.row)"
+                                            style="color: #ec407a">
+                                            报销
                                         </el-button>
                                     </template>
                                 </el-table-column>
@@ -80,71 +72,94 @@
             </el-main>
         </el-container>
 
-        <!-- 新增/编辑弹窗 -->
-        <el-dialog :title="dialogTitle" v-model="dialogVisible" width="500px" :close-on-click-modal="false">
-            <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
-                <el-form-item label="姓名" prop="name">
-                    <el-input v-model="form.name" />
-                </el-form-item>
-                <el-form-item label="身份证号" prop="idCard">
-                    <el-input v-model="form.idCard" />
-                </el-form-item>
-                <el-form-item label="性别" prop="gender">
-                    <el-select v-model="form.gender" placeholder="请选择">
-                        <el-option label="女" :value="0" />
-                        <el-option label="男" :value="1" />
-                        <el-option label="未知" :value="2" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="出生日期" prop="birthDate">
-                    <el-date-picker v-model="form.birthDate" type="date" value-format="YYYY-MM-DD" placeholder="选择日期"
-                        style="width: 100%" />
-                </el-form-item>
-                <el-form-item label="住院号" prop="inpatientNo">
-                    <el-input v-model="form.inpatientNo" placeholder="请输入住院号" />
-                </el-form-item>
-                <el-form-item label="结算类型" prop="settlementType">
-                    <el-input v-model="form.settlementType" placeholder="请输入结算类型（如：医保、自费等）" />
-                </el-form-item>
-                <el-form-item label="入院时间" prop="admissionTime">
-                    <el-date-picker v-model="form.admissionTime" type="datetime" value-format="YYYY-MM-DD HH:mm:ss"
-                        placeholder="选择入院时间" style="width: 100%" />
-                </el-form-item>
-                <el-form-item label="出院时间" prop="dischargeTime">
-                    <el-date-picker v-model="form.dischargeTime" type="datetime" value-format="YYYY-MM-DD HH:mm:ss"
-                        placeholder="选择出院时间（未出院可留空）" style="width: 100%" />
-                </el-form-item>
-                <el-form-item label="紧急联系人" prop="emergencyContact">
-                    <el-input v-model="form.emergencyContact" placeholder="请输入紧急联系人姓名" />
-                </el-form-item>
-                <el-form-item label="家庭地址" prop="address">
-                    <el-input v-model="form.address" />
-                </el-form-item>
-                <el-form-item label="工作状态" prop="workStatus">
-                    <el-input v-model="form.workStatus" />
-                </el-form-item>
-                <el-form-item label="联系电话" prop="contactPhone">
-                    <el-input v-model="form.contactPhone" />
-                </el-form-item>
-            </el-form>
+        <!-- 详情弹窗 -->
+        <el-dialog title="报销详情" v-model="detailDialogVisible" width="600px">
+            <div style="text-align:center;color:#888;">报销详情内容待实现</div>
             <template #footer>
-                <el-button @click="dialogVisible = false">取消</el-button>
-                <el-button type="primary" @click="handleSubmit">确定</el-button>
+                <el-button @click="detailDialogVisible = false">关闭</el-button>
+            </template>
+        </el-dialog>
+
+        <!-- 报销弹窗：报销确认页结构 -->
+        <el-dialog title="报销" v-model="reimburseDialogVisible" width="1100px" top="40px">
+            <div class="reimburse-confirm">
+                <!-- 顶部信息 -->
+                <div class="top-info">
+                    <span>姓名：<span class="info-value">{{ selectedInsureder?.name || '--' }}</span></span>
+                    <span>人员类别：<span class="info-value">{{ selectedInsureder?.workStatus || '--' }}</span></span>
+                    <span>结算类别：<span class="info-value">{{ selectedInsureder?.settlementType || '--' }}</span></span>
+                    <span>总费用：<span class="info-value">{{ totalFee || '--' }}</span></span>
+                    <span>报销费用：<span class="info-value">{{ reimbursementFee || '--' }}</span></span>
+                    <span>自付费用：<span class="info-value">{{ selfFee || '--' }}</span></span>
+                </div>
+                <!-- 四张表格 -->
+                <div class="reimburse-table-row">
+                    <div class="reimburse-table-col" v-for="(table, idx) in drugTables" :key="idx">
+                        <div class="reimburse-table-header">
+                            {{ table.title }}
+                            <span v-if="table.ratio" class="ratio-tag">报销比例{{ table.ratio }}</span>
+                            <span v-if="table.fee" class="fee-tag">费用 {{ table.fee }} 元</span>
+                        </div>
+                        <el-table :data="table.data" size="small" stripe
+                            style="color: #222;max-height: 220px; overflow-y: auto;">
+                            <el-table-column prop="drugName" label="药品名称" />
+                            <el-table-column prop="unit" label="单位" width="60" />
+                            <el-table-column prop="quantity" label="数量" width="60" />
+                            <el-table-column label="价格" width="80">
+                                <template #default="scope">
+                                    {{ (scope.row.price * scope.row.quantity).toFixed(2) }}
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                    <!-- 医疗服务+诊疗项目 -->
+                    <div class="reimburse-table-col">
+                        <div class="reimburse-table-header">其他项目</div>
+                        <el-table :data="serviceAndItemList" size="small" stripe
+                            style="color: #222;max-height: 220px; overflow-y: auto;">
+                            <el-table-column prop="itemName" label="项目名称" />
+                            <el-table-column prop="unit" label="单位" width="60" />
+                            <el-table-column prop="quantity" label="数量" width="60" />
+                            <el-table-column label="价格" width="80">
+                                <template #default="scope">
+                                    {{ (scope.row.price * scope.row.quantity).toFixed(2) }}
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                </div>
+                <!-- 计算公式和报销比例表 -->
+                <div class="formula-section">
+                    <div class="formula-tip">
+                        医保报销费用 = [（甲类药品报销费用 + 乙类药品报销费用 + 丙类药品报销费用 + 其他费用）- 起付线] × 报销比例
+                    </div>
+                    <el-table :data="reimbursementRatioList" size="small" stripe
+                        style="margin-top: 10px; color: #222;max-height: 220px; overflow-y: auto;">
+                        <el-table-column prop="startAmount" label="起付线" />
+                        <el-table-column prop="endAmount" label="等级线" />
+                        <el-table-column prop="ratio" label="报销比例" />
+                    </el-table>
+                    <div class="formula-tip" style="color: #888; margin-top: 8px;"
+                        v-if="!reimbursementRatioList.length">
+                    </div>
+                </div>
+            </div>
+            <template #footer>
+                <el-button @click="reimburseDialogVisible = false">关闭</el-button>
+                <el-button type="primary" disabled>确认报销</el-button>
             </template>
         </el-dialog>
     </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { Plus } from "@element-plus/icons-vue";
-import {
-    selectInsurederPage,
-    addInsureder,
-    updateInsureder,
-    removeInsureder,
-} from "@/api/insurederApi.js";
+import { ref, reactive, onMounted, computed } from "vue";
+import { ElMessage } from "element-plus";
+import { selectInsurederPage } from "@/api/insurederApi.js";
+import { getDrugOrderPage } from "@/api/drugOrderApi.js";
+import { getMedicalServiceOrderPage } from "@/api/medicalServiceOrderApi.js";
+import { getTreatmentItemOrderPage } from "@/api/treatmentItemOrderApi.js";
+import { getReimbursementRatioPage } from "@/api/reimbursementRatioMapperApi.js";
 
 // 查询参数
 const queryParams = reactive({
@@ -158,41 +173,35 @@ const page = reactive({
     currentPage: 1,
 });
 const condition = reactive({
-    name: "",//客户名
+    name: "",
     page: 1,
 });
 
 // 数据列表
 const customerInfoList = ref([]);
 
-// 弹窗表单（新增InsurederVo的属性）
-const dialogVisible = ref(false);
-const dialogTitle = ref("新增客户");
-const form = reactive({
-    id: null,
-    name: "",
-    idCard: "",
-    gender: 2,
-    birthDate: "",
-    age: null, // 年龄通常由出生日期计算，前端可留空或后端返回
-    inpatientNo: "", // 新增：住院号
-    settlementType: "", // 新增：结算类型
-    admissionTime: "", // 新增：入院时间
-    dischargeTime: "", // 新增：出院时间
-    emergencyContact: "", // 新增：紧急联系人
-    address: "",
-    workStatus: "",
-    contactPhone: "",
-});
-const formRef = ref(null);
-const rules = {
-    name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-    idCard: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
-    gender: [{ required: true, message: "请选择性别", trigger: "change" }],
-    birthDate: [{ required: true, message: "请选择出生日期", trigger: "change" }],
-    inpatientNo: [{ required: false, message: "请输入住院号", trigger: "blur" }], // 非必填示例
-    // 可根据业务需求添加其他字段的校验规则
-};
+// 弹窗控制
+const detailDialogVisible = ref(false);
+const reimburseDialogVisible = ref(false);
+
+// 报销弹窗相关数据
+const selectedInsureder = ref(null);// 被选中的医保对象
+const totalFee = ref('');// 总费用
+const reimbursementFee = ref('');// 医保报销费用
+const selfFee = ref('');// 自付费用
+const drugAList = ref([]); // 甲类
+const drugBList = ref([]); // 乙类
+const drugCList = ref([]); // 丙类
+const serviceAndItemList = ref([]); // 医疗服务+诊疗项目
+const reimbursementRatioList = ref([]);// 报销比例
+
+// 四张表格配置
+const drugTables = computed(() => [
+    { title: "甲类药品", ratio: "100%", fee: "", data: drugAList.value },
+    { title: "乙类药品", ratio: "80%", fee: "", data: drugBList.value },
+    { title: "丙类药品", ratio: "10%", fee: "", data: drugCList.value }
+]);
+
 
 // 加载数据
 const loadCustomerList = async () => {
@@ -225,94 +234,81 @@ const handleCurrentChange = (curPage) => {
     loadCustomerList();
 };
 
-// 打开新增弹窗（初始化新增属性）
-const openAdd = () => {
-    dialogTitle.value = "新增客户";
-    Object.assign(form, {
-        id: null,
-        name: "",
-        idCard: "",
-        gender: 2,
-        birthDate: "",
-        inpatientNo: "",
-        settlementType: "",
-        admissionTime: "",
-        dischargeTime: "",
-        emergencyContact: "",
-        address: "",
-        workStatus: "",
-        contactPhone: "",
-    });
-    if ('id' in form) delete form.id;
-    dialogVisible.value = true;
+// 打开详情弹窗
+const openDetail = (row) => {
+    detailDialogVisible.value = true;
 };
 
-// 打开编辑弹窗（同步新增的属性）
-const openEdit = (row) => {
-    dialogTitle.value = "编辑客户";
-    Object.assign(form, row);
-    dialogVisible.value = true;
-};
-
-// 提交表单（自动包含新增属性）
-const handleSubmit = () => {
-    formRef.value.validate(async (valid) => {
-        if (!valid) return;
-        try {
-            let res;
-            if (form.id) {
-                // 编辑：提交完整表单（包含新增属性）
-                res = await updateInsureder(form);
-            } else {
-                // 新增：提交表单（包含新增属性）
-                res = await addInsureder(form);
-            }
-            if (res.flag) {
-                ElMessage.success(res.message || "操作成功");
-                dialogVisible.value = false;
-                loadCustomerList();
-            } else {
-                ElMessage.error(res.message || "操作失败");
-            }
-        } catch (err) {
-            ElMessage.error("操作失败，请重试");
-        }
-    });
-};
-
-// 删除（逻辑不变，保持原有）
-const handleDelete = (row) => {
-    ElMessageBox.confirm("确定要删除该客户吗？", "删除确认", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-    })
-        .then(async () => {
-            try {
-                const res = await removeInsureder(row.id); // 传入id而非整个对象，更规范
-                if (res.flag) {
-                    ElMessage.success("删除成功");
-                    loadCustomerList();
-                } else {
-                    ElMessage.error(res.message || "删除失败");
-                }
-            } catch (err) {
-                ElMessage.error("删除失败，请重试");
-            }
-        })
-        .catch(() => {
-            ElMessage.info("已取消删除");
-        });
-};
 
 // 初始化
 onMounted(() => {
     loadCustomerList();
 });
+
+
+// --------------------------------
+
+const openReimburse = async (row) => {
+    selectedInsureder.value = row;
+    // 查询三类药品
+    const [drugARes, drugBRes, drugCRes] = await Promise.all([
+        getDrugOrderPage({ insurederId: row.id, drugType: "甲类", page: 1, pageSize: 100 }),
+        getDrugOrderPage({ insurederId: row.id, drugType: "乙类", page: 1, pageSize: 100 }),
+        getDrugOrderPage({ insurederId: row.id, drugType: "丙类", page: 1, pageSize: 100 }),
+    ]);
+    drugAList.value = drugARes.flag ? drugARes.data.records : [];
+    drugBList.value = drugBRes.flag ? drugBRes.data.records : [];
+    drugCList.value = drugCRes.flag ? drugCRes.data.records : [];
+
+    // 查询医疗服务和诊疗项目，并合并
+    const [serviceRes, itemRes] = await Promise.all([
+        getMedicalServiceOrderPage({ insurederId: row.id, page: 1, pageSize: 100 }),
+        getTreatmentItemOrderPage({ insurederId: row.id, page: 1, pageSize: 100 }),
+    ]);
+    // 统一字段名为 itemName/unit/quantity/price
+    const serviceList = (serviceRes.flag ? serviceRes.data.records : []).map(item => ({
+        itemName: item.serviceName || item.itemName,
+        unit: item.unit,
+        quantity: item.quantity,
+        price: item.price,
+    }));
+    const itemList = (itemRes.flag ? itemRes.data.records : []).map(item => ({
+        itemName: item.itemName,
+        unit: item.unit,
+        quantity: item.quantity,
+        price: item.price,
+    }));
+    serviceAndItemList.value = [...serviceList, ...itemList];
+
+    // 查询报销比例
+    await loadReimbursementRatioList();
+
+    reimburseDialogVisible.value = true;
+};
+
+// 查询报销比例
+const loadReimbursementRatioList = async () => {
+    // 医院等级固定'一级'，status固定'启用'，staffType从选中投保人workStatus取
+    const params = {
+        page: 1,
+        pageSize: 100,
+        hospitalLevel: "一级",
+        staffType: selectedInsureder.value?.workStatus || "",
+        status: "启用",
+    };
+    const res = await getReimbursementRatioPage(params);
+    if (res.flag) {
+        reimbursementRatioList.value = res.data.records;
+    } else {
+        reimbursementRatioList.value = [];
+    }
+};
+
+
+
 </script>
 
 <style scoped>
-/* 样式保持不变，与原有风格一致 */
 .table-main {
     min-height: 500px;
     border: 1px solid #f8bbd0;
@@ -335,7 +331,7 @@ onMounted(() => {
 
 .el-table {
     background: #fff0f6;
-    color: #ad1457;
+    color: #222;
 }
 
 .el-table th {
@@ -369,5 +365,88 @@ onMounted(() => {
 
 .el-form-item__label {
     color: #ad1457;
+}
+
+/* 报销弹窗专用样式 */
+.reimburse-confirm {
+    background: #fff0f6;
+    padding: 10px 10px 0 10px;
+    border-radius: 8px;
+}
+
+.top-info {
+    margin: 10px 0 18px 0;
+    font-size: 16px;
+    color: #ad1457;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: center;
+}
+
+.info-value {
+    color: #ec407a;
+    font-weight: bold;
+    margin-left: 4px;
+}
+
+.reimburse-table-row {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 24px;
+    justify-content: space-between;
+}
+
+.reimburse-table-col {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px #f8bbd0;
+    padding: 12px 10px 8px 10px;
+    min-width: 220px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.reimburse-table-header {
+    font-size: 16px;
+    color: #ec407a;
+    font-weight: bold;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ratio-tag {
+    background: #f8bbd0;
+    color: #ad1457;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 13px;
+}
+
+.fee-tag {
+    background: #e1bee7;
+    color: #ad1457;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 13px;
+}
+
+.formula-section {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px #f8bbd0;
+    padding: 18px 18px 10px 18px;
+    margin-top: 18px;
+}
+
+.formula-tip {
+    color: #ec407a;
+    font-size: 15px;
+    margin-bottom: 8px;
+    font-weight: bold;
 }
 </style>

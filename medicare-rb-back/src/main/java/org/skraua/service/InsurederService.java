@@ -1,7 +1,5 @@
 package org.skraua.service;
 
-import java.util.List;
-
 import org.skraua.dto.InsurederDTO;
 import org.skraua.pojo.Insureder;
 import org.skraua.utils.ResultVo;
@@ -19,8 +17,10 @@ public interface InsurederService extends IService<Insureder> {
 
     public ResultVo<Page<InsurederVo>> selectInsurederPage(InsurederDTO patientDTO) throws Exception;
 
-    public ResultVo<Void> addInsurederInfo(InsurederDTO patientDTO) throws Exception;
+    // public ResultVo<Void> addInsurederInfo(InsurederDTO patientDTO) throws
+    // Exception;
 
-    public ResultVo<Void> editInsurederInfo(InsurederDTO patientDTO) throws Exception;
+    // public ResultVo<Void> editInsurederInfo(InsurederDTO patientDTO) throws
+    // Exception;
 
 }

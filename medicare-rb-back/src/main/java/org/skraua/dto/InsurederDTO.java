@@ -61,9 +61,11 @@ public class InsurederDTO implements Serializable {
     private String settlementType; // 对应数据库字段：settlement_type
 
     @ApiModelProperty(value = "入院时间")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime admissionTime; // 对应数据库字段：admission_time（DATETIME类型）
 
     @ApiModelProperty(value = "出院时间")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dischargeTime; // 对应数据库字段：discharge_time（DATETIME类型）
 
     @ApiModelProperty(value = "紧急联系人")

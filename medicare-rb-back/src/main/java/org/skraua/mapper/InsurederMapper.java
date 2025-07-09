@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 /**
  * @author Zhou Xinyang
  * @date 2025/07/08
- * @description PatientMapper
+ * @description InsurederMapper
  */
 public interface InsurederMapper extends BaseMapper<Insureder> {
 
