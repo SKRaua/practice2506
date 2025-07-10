@@ -17,4 +17,16 @@
     <sql id="Base_Column_List">
         id,item_name,item_code,national_code,description,exclusion,unit,price,remark,item_type
     </sql>
+
+
+    <select id="selectTreatmentItemVoPage" resultType="org.skraua.vo.TreatmentItemVo">
+        SELECT *
+        FROM Treatment_Item
+        <where>
+            <if test="treatmentItemDTO != null and treatmentItemDTO.itemName != null and treatmentItemDTO.itemName != ''">
+                AND item_name LIKE CONCAT('%', #{treatmentItemDTO.itemName}, '%')
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
 </mapper>

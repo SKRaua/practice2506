@@ -42,9 +42,19 @@ public class ReimbursementCalcDTO implements Serializable {
     @ApiModelProperty(value = "诊疗项目费用")
     private BigDecimal itemFee;
 
+    @ApiModelProperty(value = "可报销费用")
+    private BigDecimal reimbursable;
+
+    @ApiModelProperty(value = "起付线")
+    private BigDecimal deductible;
+
+    @ApiModelProperty(value = "综合报销比例")
+    private BigDecimal ratio;
+
     public ReimbursementCalcDTO(BigDecimal totalFee, BigDecimal reimbursementAmount, BigDecimal selfPayAmount,
             BigDecimal drugAFee, BigDecimal drugBFee, BigDecimal drugCFee,
-            BigDecimal serviceFee, BigDecimal itemFee) {
+            BigDecimal serviceFee, BigDecimal itemFee, BigDecimal reimbursable, BigDecimal deductible,
+            BigDecimal ratio) {
         this.totalFee = totalFee;
         this.reimbursementAmount = reimbursementAmount;
         this.selfPayAmount = selfPayAmount;
@@ -53,5 +63,9 @@ public class ReimbursementCalcDTO implements Serializable {
         this.drugCFee = drugCFee;
         this.serviceFee = serviceFee;
         this.itemFee = itemFee;
+        this.reimbursable = reimbursable;
+        this.deductible = deductible;
+        this.ratio = ratio;
     }
+
 }

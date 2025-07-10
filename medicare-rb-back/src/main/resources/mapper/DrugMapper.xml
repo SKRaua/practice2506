@@ -19,4 +19,17 @@
 
 
 
+    <!-- selectDrugVoPage  
+        <include refid="Base_Column_List"/>-->
+
+    <select id="selectDrugVoPage" resultType="org.skraua.vo.DrugVo">
+        SELECT *
+        FROM Drug
+        <where>
+            <if test="drugDTO != null and drugDTO.drugName != null and drugDTO.drugName != ''">
+                AND drug_name LIKE CONCAT('%', #{drugDTO.drugName}, '%')
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
 </mapper>

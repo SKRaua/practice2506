@@ -17,4 +17,10 @@ public interface DrugOrderService extends IService<DrugOrder> {
 
     public ResultVo<Page<DrugOrderVo>> selectDrugOrderVoPage(DrugOrderDTO drugOrderDTO) throws Exception;
 
+    ResultVo<Void> addDrugOrder(DrugOrderDTO drugOrderDTO) throws Exception;
+
+    ResultVo<Void> updateDrugOrder(DrugOrderDTO drugOrderDTO) throws Exception;
+
+    ResultVo<Void> removeDrugOrder(Integer id) throws Exception;
+
 }

@@ -30,9 +30,6 @@ public class ReimbursementRecord implements Serializable {
     @ApiModelProperty(value = "患者ID")
     private Integer patientId;
 
-    @ApiModelProperty(value = "诊断ID")
-    private Integer diagnosisId;
-
     @ApiModelProperty(value = "医院ID")
     private Integer hospitalId;
 
@@ -57,15 +54,22 @@ public class ReimbursementRecord implements Serializable {
     @ApiModelProperty(value = "报销日期")
     private LocalDateTime reimbursementDate;
 
-    @ApiModelProperty(value = "报销方式（现金/银行卡/医保卡）")
-    private String reimbursementMethod;
-
-    @ApiModelProperty(value = "状态（待审核/已报销/已驳回）")
-    private String status;
-
     @ApiModelProperty(value = "操作员")
     private String operator;
 
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    @ApiModelProperty(value = "姓名")
+    private String name;
+
+    @ApiModelProperty(value = "身份证号")
+    private String idCard;
+
+    @ApiModelProperty(value = "住院号")
+    private String inpatientNo;
+
+    @ApiModelProperty(value = "工作状态 '在职','退休','无业','学生'")
+    private String workStatus;
+
 }

@@ -2,7 +2,9 @@ package org.skraua.vo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -34,8 +36,9 @@ public class TreatmentItemOrderVo implements Serializable {
     @ApiModelProperty(value = "项目ID（关联药品、服务或诊疗项目）")
     private Integer itemId;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "开单时间")
-    private Date orderTime;
+    private LocalDate orderTime;
 
     @ApiModelProperty(value = "数量")
     private Integer quantity;
@@ -43,8 +46,9 @@ public class TreatmentItemOrderVo implements Serializable {
     @ApiModelProperty(value = "执行状态（'未执行','执行中','已执行','取消'）")
     private String executeStatus;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "执行时间")
-    private Date executeTime;
+    private LocalDate executeTime;
 
     @ApiModelProperty(value = "开单医生姓名")
     private String doctorName;

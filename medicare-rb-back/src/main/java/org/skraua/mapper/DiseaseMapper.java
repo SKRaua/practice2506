@@ -1,8 +1,13 @@
 // DiseaseMapper.java
 package org.skraua.mapper;
 
+import org.apache.ibatis.annotations.Param;
+import org.skraua.dto.DiseaseDTO;
 import org.skraua.pojo.Disease;
+import org.skraua.vo.DiseaseVo;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 /**
  * @author Zhou Xinyang
@@ -10,4 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @description 疾病维护表Mapper
  */
 public interface DiseaseMapper extends BaseMapper<Disease> {
+    Page<DiseaseVo> selectDiseaseVoPage(Page<DiseaseVo> page, @Param("diseaseDTO") DiseaseDTO diseaseDTO);
 }

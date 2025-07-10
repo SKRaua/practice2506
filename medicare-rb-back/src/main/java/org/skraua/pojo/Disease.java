@@ -34,6 +34,6 @@ public class Disease implements Serializable {
     @ApiModelProperty(value = "ICD编码")
     private String icdCode;
 
-    @ApiModelProperty(value = "疾病类型（传染病/慢性病/急性病）")
+    @ApiModelProperty(value = "疾病类型）")
     private String diseaseType;
 }

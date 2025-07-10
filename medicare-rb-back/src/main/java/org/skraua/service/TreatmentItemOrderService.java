@@ -16,4 +16,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface TreatmentItemOrderService extends IService<TreatmentItemOrder> {
     public ResultVo<Page<TreatmentItemOrderVo>> selectTreatmentItemOrderVoPage(
             TreatmentItemOrderDTO treatmentItemOrderDTO) throws Exception;
+
+    ResultVo<Void> addTreatmentItemOrder(TreatmentItemOrderDTO dto) throws Exception;
+
+    ResultVo<Void> updateTreatmentItemOrder(TreatmentItemOrderDTO dto) throws Exception;
+
+    ResultVo<Void> removeTreatmentItemOrder(Integer id) throws Exception;
 }

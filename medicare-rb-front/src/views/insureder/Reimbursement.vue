@@ -146,7 +146,7 @@
             </div>
             <template #footer>
                 <el-button @click="reimburseDialogVisible = false">关闭</el-button>
-                <el-button type="primary" disabled>确认报销</el-button>
+                <el-button type="primary" @click="handleConfirmRb">确认报销</el-button>
             </template>
         </el-dialog>
     </div>
@@ -160,6 +160,7 @@ import { getDrugOrderPage } from "@/api/drugOrderApi.js";
 import { getMedicalServiceOrderPage } from "@/api/medicalServiceOrderApi.js";
 import { getTreatmentItemOrderPage } from "@/api/treatmentItemOrderApi.js";
 import { getReimbursementRatioPage } from "@/api/reimbursementRatioMapperApi.js";
+import { calculateRb, confirmRb } from "@/api/reimbursementRecordApi.js";
 
 // 查询参数
 const queryParams = reactive({
@@ -186,6 +187,7 @@ const reimburseDialogVisible = ref(false);
 
 // 报销弹窗相关数据
 const selectedInsureder = ref(null);// 被选中的医保对象
+// const calculatedRb = ref([]);// 计算后报销详情
 const totalFee = ref('');// 总费用
 const reimbursementFee = ref('');// 医保报销费用
 const selfFee = ref('');// 自付费用
@@ -247,23 +249,22 @@ onMounted(() => {
 
 
 // --------------------------------
-
+// 打开报销弹窗
 const openReimburse = async (row) => {
     selectedInsureder.value = row;
     // 查询三类药品
     const [drugARes, drugBRes, drugCRes] = await Promise.all([
-        getDrugOrderPage({ insurederId: row.id, drugType: "甲类", page: 1, pageSize: 100 }),
-        getDrugOrderPage({ insurederId: row.id, drugType: "乙类", page: 1, pageSize: 100 }),
-        getDrugOrderPage({ insurederId: row.id, drugType: "丙类", page: 1, pageSize: 100 }),
+        getDrugOrderPage({ patientId: row.id, drugType: "甲类", page: 1, pageSize: 100 }),
+        getDrugOrderPage({ patientId: row.id, drugType: "乙类", page: 1, pageSize: 100 }),
+        getDrugOrderPage({ patientId: row.id, drugType: "丙类", page: 1, pageSize: 100 }),
     ]);
     drugAList.value = drugARes.flag ? drugARes.data.records : [];
     drugBList.value = drugBRes.flag ? drugBRes.data.records : [];
     drugCList.value = drugCRes.flag ? drugCRes.data.records : [];
-
     // 查询医疗服务和诊疗项目，并合并
     const [serviceRes, itemRes] = await Promise.all([
-        getMedicalServiceOrderPage({ insurederId: row.id, page: 1, pageSize: 100 }),
-        getTreatmentItemOrderPage({ insurederId: row.id, page: 1, pageSize: 100 }),
+        getMedicalServiceOrderPage({ patientId: row.id, page: 1, pageSize: 100 }),
+        getTreatmentItemOrderPage({ patientId: row.id, page: 1, pageSize: 100 }),
     ]);
     // 统一字段名为 itemName/unit/quantity/price
     const serviceList = (serviceRes.flag ? serviceRes.data.records : []).map(item => ({
@@ -282,6 +283,9 @@ const openReimburse = async (row) => {
 
     // 查询报销比例
     await loadReimbursementRatioList();
+
+    // 查询报销
+    await loadCalculatedRb();
 
     reimburseDialogVisible.value = true;
 };
@@ -304,7 +308,39 @@ const loadReimbursementRatioList = async () => {
     }
 };
 
+// 查询报销金额详情
+const loadCalculatedRb = async () => {
+    const params = {
+        patientId: selectedInsureder.value?.id,
+    };
+    const res = await calculateRb(params);
+    if (res.flag) {
+        totalFee.value = res.data.totalFee;// 总费用
+        reimbursementFee.value = res.data.reimbursementAmount;// 医保报销费用
+        selfFee.value = res.data.selfPayAmount;// 自付费用
+    } else {
+    }
+};
 
+// 确认报销
+const handleConfirmRb = async () => {
+    if (!selectedInsureder.value?.id) {
+        ElMessage.error("未选中参保人");
+        return;
+    }
+    try {
+        const res = await confirmRb({ patientId: selectedInsureder.value.id });
+        if (res.flag) {
+            ElMessage.success("报销成功");
+            reimburseDialogVisible.value = false;
+            loadCustomerList(); // 刷新列表
+        } else {
+            ElMessage.error(res.message || "报销失败");
+        }
+    } catch (err) {
+        ElMessage.error("网络错误，请重试");
+    }
+};
 
 </script>
 

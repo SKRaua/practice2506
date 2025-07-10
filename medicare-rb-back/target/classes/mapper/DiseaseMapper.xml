@@ -12,4 +12,21 @@
     <sql id="Base_Column_List">
         id,disease_name,disease_code,icd_code,disease_type
     </sql>
+
+
+
+    <!-- 分页查询DiseaseVo -->
+    <select id="selectDiseaseVoPage" resultType="org.skraua.vo.DiseaseVo">
+        SELECT *
+        FROM Disease
+        <where>
+            <if test="diseaseDTO != null and diseaseDTO.diseaseName != null and diseaseDTO.diseaseName != ''">
+                AND disease_name LIKE CONCAT('%', #{diseaseDTO.diseaseName}, '%')
+            </if>
+            <if test="diseaseDTO != null and diseaseDTO.diseaseType != null and diseaseDTO.diseaseType != ''">
+                AND disease_type = #{diseaseDTO.diseaseType}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
 </mapper>

@@ -19,4 +19,10 @@ public interface MedicalServiceOrderService extends IService<MedicalServiceOrder
     public ResultVo<Page<MedicalServiceOrderVo>> selectMedicalServiceOrderVoPage(
             MedicalServiceOrderDTO medicalServiceOrderDTO) throws Exception;
 
+    ResultVo<Void> addMedicalServiceOrder(MedicalServiceOrderDTO dto) throws Exception;
+
+    ResultVo<Void> updateMedicalServiceOrder(MedicalServiceOrderDTO dto) throws Exception;
+
+    ResultVo<Void> removeMedicalServiceOrder(Integer id) throws Exception;
+
 }

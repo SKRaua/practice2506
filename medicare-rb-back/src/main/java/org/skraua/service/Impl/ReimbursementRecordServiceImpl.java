@@ -3,6 +3,7 @@ package org.skraua.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.skraua.dto.ReimbursementCalcDTO;
@@ -77,7 +78,12 @@ public class ReimbursementRecordServiceImpl extends ServiceImpl<ReimbursementRec
      */
     @Override
     public ResultVo<ReimbursementCalcDTO> calculateReimbursement(Integer insurederId) throws Exception {
-        // 1. 查询药品订单
+
+        Insureder insureder = insurederMapper.selectById(insurederId);
+        if (insureder == null) {
+            return ResultVo.fail("未找到该投保人信息，无法计算报销");
+        }
+        // 查询药品订单
         QueryWrapper<DrugOrder> drugOrderQw = new QueryWrapper<>();
         drugOrderQw.eq("patient_id", insurederId);
         List<DrugOrder> drugOrders = drugOrderMapper.selectList(drugOrderQw);
@@ -102,7 +108,7 @@ public class ReimbursementRecordServiceImpl extends ServiceImpl<ReimbursementRec
             }
         }
 
-        // 4. 查询医疗服务订单
+        // 查询医疗服务订单
         QueryWrapper<MedicalServiceOrder> serviceOrderQw = new QueryWrapper<>();
         serviceOrderQw.eq("patient_id", insurederId);
         List<MedicalServiceOrder> serviceOrders = medicalServiceOrderMapper.selectList(serviceOrderQw);
@@ -117,7 +123,7 @@ public class ReimbursementRecordServiceImpl extends ServiceImpl<ReimbursementRec
             serviceFee = serviceFee.add(fee);
         }
 
-        // 5. 查询诊疗项目订单
+        // 查询诊疗项目订单
         QueryWrapper<TreatmentItemOrder> itemOrderQw = new QueryWrapper<>();
         itemOrderQw.eq("patient_id", insurederId);
         List<TreatmentItemOrder> itemOrders = treatmentItemOrderMapper.selectList(itemOrderQw);
@@ -132,25 +138,25 @@ public class ReimbursementRecordServiceImpl extends ServiceImpl<ReimbursementRec
             itemFee = itemFee.add(fee);
         }
 
-        // 6. 计算总费用
+        // 计算总费用
         BigDecimal totalFee = drugAFee.add(drugBFee).add(drugCFee).add(serviceFee).add(itemFee);
-        Insureder insureder = insurederMapper.selectById(insurederId);
+
+        // 自费
         if (!insureder.getSettlementType().equals("医保")) {
 
-            // 8. 计算可报销费用
+            // 计算可报销费用
             // BigDecimal reimbursable = BigDecimal.ZERO;
             BigDecimal reimbursementAmount = BigDecimal.ZERO;
             BigDecimal selfPayAmount = totalFee;
 
-            // 9. 封装DTO返回
+            // 封装DTO返回
             ReimbursementCalcDTO dto = new ReimbursementCalcDTO(totalFee, reimbursementAmount, selfPayAmount, drugAFee,
-                    drugBFee, drugCFee, serviceFee, itemFee);
+                    drugBFee, drugCFee, serviceFee, itemFee, new BigDecimal(0), new BigDecimal(0), new BigDecimal(0));
             return ResultVo.ok(dto);
         }
 
         // 报销
-
-        // 2. 查询药品报销比例（Drug_Rb_Ratio），限定status=启用
+        // 查询药品报销比例（Drug_Rb_Ratio），限定status=启用
         QueryWrapper<DrugRbRatio> rbRatioQw = new QueryWrapper<>();
         rbRatioQw.eq("status", "启用");
         List<DrugRbRatio> rbRatios = drugRbRatioMapper.selectList(rbRatioQw);
@@ -177,7 +183,7 @@ public class ReimbursementRecordServiceImpl extends ServiceImpl<ReimbursementRec
             return ResultVo.fail("药品报销比例异常");
         }
 
-        // 3. 先对三类药品费用分别乘以各自比例
+        // 先对三类药品费用分别乘以各自比例
         drugAFee = drugAFee
                 .multiply(drugARatio == null ? BigDecimal.ZERO : drugARatio.multiply(new BigDecimal("0.01")));
         drugBFee = drugBFee
@@ -185,7 +191,7 @@ public class ReimbursementRecordServiceImpl extends ServiceImpl<ReimbursementRec
         drugCFee = drugCFee
                 .multiply(drugCRatio == null ? BigDecimal.ZERO : drugCRatio.multiply(new BigDecimal("0.01")));
 
-        // 7. 查询报销比例（只取第一个启用的比例）
+        // 查询报销比例（只取第一个启用的比例）
         QueryWrapper<ReimbursementRatio> ratioQw = new QueryWrapper<>();
         ratioQw.eq("status", "启用");
         ratioQw.ge("end_amount", totalFee); // end_amount >= totalFee
@@ -197,35 +203,73 @@ public class ReimbursementRecordServiceImpl extends ServiceImpl<ReimbursementRec
         BigDecimal reimbursementRatio = ratio != null && ratio.getRatio() != null ? ratio.getRatio()
                 : BigDecimal.ONE;
 
-        // 8. 计算可报销费用
+        // 计算可报销费用
         BigDecimal reimbursable = totalFee.subtract(deductible).max(BigDecimal.ZERO);
         BigDecimal reimbursementAmount = reimbursable.multiply(reimbursementRatio.multiply(new BigDecimal("0.01")))
                 .setScale(2, RoundingMode.HALF_UP);
         BigDecimal selfPayAmount = totalFee.subtract(reimbursementAmount);
 
-        // 9. 封装DTO返回
+        // 封装DTO返回
         ReimbursementCalcDTO dto = new ReimbursementCalcDTO(totalFee, reimbursementAmount, selfPayAmount, drugAFee,
-                drugBFee, drugCFee, serviceFee, itemFee);
+                drugBFee, drugCFee, serviceFee, itemFee, reimbursable, deductible, reimbursementRatio);
         return ResultVo.ok(dto);
     }
 
     @Override
     public ResultVo<Void> confirmReimbursement(ReimbursementRecordDTO recordDTO) throws Exception {
 
-        // 1. 重新计算费用（防止前端篡改）
+        // 重新计算费用（防止前端篡改）
         ReimbursementCalcDTO calc = calculateReimbursement(recordDTO.getPatientId()).getData();
-        // 2. 保存报销记录
+        if (calc == null) {
+            throw new Exception("费用计算异常，无法完成报销");
+        }
+        // 保存报销记录
         ReimbursementRecord record = new ReimbursementRecord();
         record.setPatientId(recordDTO.getPatientId());
         record.setTotalMedicalFee(calc.getTotalFee());
         record.setReimbursementAmount(calc.getReimbursementAmount());
         record.setSelfPayAmount(calc.getSelfPayAmount());
+        record.setDeductibleAmount(calc.getDeductible());
+        record.setReimbursableAmount(calc.getReimbursable());
+        record.setReimbursementRatio(calc.getRatio());
+        record.setReimbursementDate(LocalDateTime.now());
         // ...其他字段赋值...
-        int insert = reimbursementRecordMapper.insert(record);
-        if (insert > 0) {
-            return ResultVo.ok("报销成功");
-
+        Insureder insureder = insurederMapper.selectById(recordDTO.getPatientId());
+        if (insureder == null) {
+            throw new Exception("投保人信息不存在，无法完成报销");
         }
-        return ResultVo.fail("报销失败");
+        record.setName(insureder.getName());
+        record.setIdCard(insureder.getIdCard());
+        record.setInpatientNo(insureder.getInpatientNo());
+        record.setWorkStatus(insureder.getWorkStatus());
+
+        int insert = reimbursementRecordMapper.insert(record);
+        if (insert <= 0) {
+            throw new Exception("保存报销记录失败");
+        }
+
+        // 删除院内药品，医疗服务，诊疗项目记录
+        QueryWrapper<DrugOrder> drugOrderDelQw = new QueryWrapper<>();
+        drugOrderDelQw.eq("patient_id", recordDTO.getPatientId());
+        drugOrderMapper.delete(drugOrderDelQw);
+
+        QueryWrapper<MedicalServiceOrder> serviceOrderDelQw = new QueryWrapper<>();
+        serviceOrderDelQw.eq("patient_id", recordDTO.getPatientId());
+        medicalServiceOrderMapper.delete(serviceOrderDelQw);
+
+        QueryWrapper<TreatmentItemOrder> itemOrderDelQw = new QueryWrapper<>();
+        itemOrderDelQw.eq("patient_id", recordDTO.getPatientId());
+        treatmentItemOrderMapper.delete(itemOrderDelQw);
+
+        // 校验三张表都无该患者记录才算成功
+        int leftDrug = drugOrderMapper.selectCount(drugOrderDelQw);
+        int leftService = medicalServiceOrderMapper.selectCount(serviceOrderDelQw);
+        int leftItem = treatmentItemOrderMapper.selectCount(itemOrderDelQw);
+
+        if (leftDrug > 0 || leftService > 0 || leftItem > 0) {
+            throw new Exception("删除院内明细失败");
+        }
+
+        return ResultVo.ok("报销成功");
     }
 }

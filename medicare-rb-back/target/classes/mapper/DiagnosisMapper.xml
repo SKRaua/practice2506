@@ -15,4 +15,24 @@
     <sql id="Base_Column_List">
         id,patient_id,disease_id,diagnosis_type,diagnosis_date,diagnose_doctor,remark
     </sql>
+
+    <!-- 分页查询DiagnosisVo，联表查疾病名称 -->
+    <select id="selectDiagnosisVoPage" resultType="org.skraua.vo.DiagnosisVo">
+        SELECT 
+        d.*,
+        ds.disease_name
+        FROM Diagnosis d
+        LEFT JOIN Disease ds ON d.disease_id = ds.id
+        <where>
+            <if test="diagnosisDTO != null and diagnosisDTO.patientId != null">
+                AND d.patient_id = #{diagnosisDTO.patientId}
+            </if>
+            <if test="diagnosisDTO != null and diagnosisDTO.diseaseName != null and diagnosisDTO.diseaseName != ''">
+                AND ds.disease_name LIKE CONCAT('%', #{diagnosisDTO.diseaseName}, '%')
+            </if>
+        </where>
+        ORDER BY d.diagnosis_date DESC
+    </select>
+
+
 </mapper>

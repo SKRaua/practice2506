@@ -1,7 +1,12 @@
 // DiseaseService.java
 package org.skraua.service;
 
+import org.skraua.dto.DiseaseDTO;
 import org.skraua.pojo.Disease;
+import org.skraua.utils.ResultVo;
+import org.skraua.vo.DiseaseVo;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -10,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @description 疾病维护表Service
  */
 public interface DiseaseService extends IService<Disease> {
+ ResultVo<Page<DiseaseVo>> selectDiseaseVoPage(DiseaseDTO diseaseDTO) throws Exception;
 }

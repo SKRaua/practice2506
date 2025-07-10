@@ -1,22 +1,6 @@
 <template>
     <div class="common-layout">
         <el-container>
-            <!-- 头部搜索 -->
-            <!-- <el-header>
-                <div>
-                    <el-row :gutter="30">
-                        <el-col :span="7">
-                            <el-input placeholder="请输入姓名查询" v-model="queryParams.customerName" @clear="query" clearable
-                                size="large" @keyup.enter="query">
-                                <template #append>
-                                    <el-button type="info" @click="query" style="color: black">查询</el-button>
-                                </template>
-</el-input>
-</el-col>
-</el-row>
-</div>
-</el-header> -->
-
             <el-main>
                 <el-row :gutter="20" style="min-height: 700px;">
                     <!-- 左侧：参保人表格 -->
@@ -37,6 +21,7 @@
                                     </el-col>
                                 </el-row>
                             </div>
+                            <div style="height: 10px;"></div>
                             <div class="table-main-header">参保人信息</div>
                             <el-table :data="customerInfoList" highlight-current-row size="small" style="width: 100%;"
                                 stripe @row-click="handleRowClick">
@@ -209,7 +194,7 @@ const loadDrugList = async (pageNum = 1) => {
     drugPage.currentPage = pageNum;
     try {
         const res = await getDrugOrderPage({
-            id: currentInsurederId.value,
+            patientId: currentInsurederId.value,
             page: drugPage.currentPage,
             pageSize: drugPage.pageSize,
         });
@@ -230,7 +215,7 @@ const loadMedicalServiceList = async (pageNum = 1) => {
     medicalServicePage.currentPage = pageNum;
     try {
         const res = await getMedicalServiceOrderPage({
-            id: currentInsurederId.value,
+            patientId: currentInsurederId.value,
             page: medicalServicePage.currentPage,
             pageSize: medicalServicePage.pageSize,
         });
@@ -251,7 +236,7 @@ const loadTreatmentItemList = async (pageNum = 1) => {
     treatmentItemPage.currentPage = pageNum;
     try {
         const res = await getTreatmentItemOrderPage({
-            id: currentInsurederId.value,
+            patientId: currentInsurederId.value,
             page: treatmentItemPage.currentPage,
             pageSize: treatmentItemPage.pageSize,
         });

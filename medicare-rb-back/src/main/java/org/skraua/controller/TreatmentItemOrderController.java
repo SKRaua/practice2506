@@ -7,6 +7,8 @@ import org.skraua.vo.TreatmentItemOrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,4 +42,21 @@ public class TreatmentItemOrderController {
         return treatmentItemOrderService.selectTreatmentItemOrderVoPage(treatmentItemOrderDTO);
     }
 
+    @ApiOperation("添加诊疗项目订单")
+    @PostMapping("/add")
+    public ResultVo<Void> addTreatmentItemOrder(@RequestBody TreatmentItemOrderDTO dto) throws Exception {
+        return treatmentItemOrderService.addTreatmentItemOrder(dto);
+    }
+
+    @ApiOperation("修改诊疗项目订单")
+    @PostMapping("/edit")
+    public ResultVo<Void> updateTreatmentItemOrder(@RequestBody TreatmentItemOrderDTO dto) throws Exception {
+        return treatmentItemOrderService.updateTreatmentItemOrder(dto);
+    }
+
+    @ApiOperation("删除诊疗项目订单")
+    @PostMapping("/remove")
+    public ResultVo<Void> removeTreatmentItemOrder(@RequestBody TreatmentItemOrderDTO dto) throws Exception {
+        return treatmentItemOrderService.removeTreatmentItemOrder(dto.getId());
+    }
 }

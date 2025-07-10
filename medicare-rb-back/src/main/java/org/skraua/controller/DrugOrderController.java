@@ -7,6 +7,8 @@ import org.skraua.vo.DrugOrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +32,7 @@ public class DrugOrderController {
     @Autowired
     private DrugOrderService drugOrderService;
 
-    @ApiOperation("参保人信息查询")
+    @ApiOperation("开药记录分页查询")
     @GetMapping("/info")
     @ApiImplicitParams({
             @ApiImplicitParam(dataType = "int", name = "page", value = "页码", required = true)
@@ -39,4 +41,21 @@ public class DrugOrderController {
         return drugOrderService.selectDrugOrderVoPage(drugOrderDTO);
     }
 
+    @ApiOperation("添加开药记录")
+    @PostMapping("/add")
+    public ResultVo<Void> addDrugOrder(@RequestBody DrugOrderDTO drugOrderDTO) throws Exception {
+        return drugOrderService.addDrugOrder(drugOrderDTO);
+    }
+
+    @ApiOperation("修改开药记录")
+    @PostMapping("/edit")
+    public ResultVo<Void> updateDrugOrder(@RequestBody DrugOrderDTO drugOrderDTO) throws Exception {
+        return drugOrderService.updateDrugOrder(drugOrderDTO);
+    }
+
+    @ApiOperation("删除开药记录")
+    @PostMapping("/remove")
+    public ResultVo<Void> removeDrugOrder(@RequestBody DrugOrderDTO drugOrderDTO) throws Exception {
+        return drugOrderService.removeDrugOrder(drugOrderDTO.getId());
+    }
 }
