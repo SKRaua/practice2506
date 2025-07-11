@@ -31,12 +31,13 @@
                                 style="width: 100%; color: black" stripe>
                                 <el-table-column align="center" fixed type="index" label="序号" width="60"
                                     :index="(i) => (page.currentPage - 1) * page.pageSize + i + 1" />
-                                <el-table-column align="center" prop="drugName" label="药品名称" width="120" />
+                                <el-table-column align="center" prop="drugName" label="通用名称" width="120" />
+                                <el-table-column align="center" prop="tradeName" label="商品名称" width="120" />
                                 <el-table-column align="center" prop="specification" label="规格" width="100" />
-                                <el-table-column align="center" prop="unit" label="单位" width="60" />
+                                <el-table-column align="center" prop="unit" label="计价单位" width="80" />
                                 <el-table-column align="center" prop="manufacturer" label="生产企业" width="120" />
                                 <el-table-column align="center" prop="price" label="单价" width="80" />
-                                <el-table-column align="center" prop="type" label="药品类型" width="80" />
+                                <el-table-column align="center" prop="drugType" label="药品类型" width="80" />
                                 <el-table-column align="center" prop="remark" label="备注" />
                                 <el-table-column align="center" label="操作" width="160" fixed="right">
                                     <template #default="scope">
@@ -65,13 +66,16 @@
         <!-- 新增/编辑弹窗 -->
         <el-dialog :title="dialogTitle" v-model="dialogVisible" width="500px" :close-on-click-modal="false">
             <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
-                <el-form-item label="药品名称" prop="drugName">
+                <el-form-item label="通用名称" prop="drugName">
                     <el-input v-model="form.drugName" />
+                </el-form-item>
+                <el-form-item label="商品名称" prop="tradeName">
+                    <el-input v-model="form.tradeName" />
                 </el-form-item>
                 <el-form-item label="规格" prop="specification">
                     <el-input v-model="form.specification" />
                 </el-form-item>
-                <el-form-item label="单位" prop="unit">
+                <el-form-item label="计价单位" prop="unit">
                     <el-input v-model="form.unit" />
                 </el-form-item>
                 <el-form-item label="生产企业" prop="manufacturer">
@@ -80,8 +84,8 @@
                 <el-form-item label="单价" prop="price">
                     <el-input-number v-model="form.price" :min="0" />
                 </el-form-item>
-                <el-form-item label="药品类型" prop="type">
-                    <el-select v-model="form.type" placeholder="请选择">
+                <el-form-item label="药品类型" prop="drugType">
+                    <el-select v-model="form.drugType" placeholder="请选择">
                         <el-option label="甲类" value="甲类" />
                         <el-option label="乙类" value="乙类" />
                         <el-option label="丙类" value="丙类" />
@@ -135,18 +139,23 @@ const dialogTitle = ref("新增药品");
 const form = reactive({
     id: null,
     drugName: "",
+    tradeName: "",
     specification: "",
     unit: "",
     manufacturer: "",
     price: 0,
-    type: "",
+    drugType: "",
     remark: "",
 });
 const formRef = ref(null);
 const rules = {
-    drugName: [{ required: true, message: "请输入药品名称", trigger: "blur" }],
+    drugName: [{ required: true, message: "请输入通用名称", trigger: "blur" }],
+    tradeName: [{ required: true, message: "请输入商品名称", trigger: "blur" }],
+    specification: [{ required: true, message: "请输入规格", trigger: "blur" }],
+    unit: [{ required: true, message: "请输入计价单位", trigger: "blur" }],
+    manufacturer: [{ required: true, message: "请输入生产企业", trigger: "blur" }],
     price: [{ required: true, message: "请输入单价", trigger: "blur" }],
-    type: [{ required: true, message: "请选择药品类型", trigger: "change" }],
+    drugType: [{ required: true, message: "请选择药品类型", trigger: "change" }], // 修改为 drugType
 };
 
 // 加载数据
@@ -186,11 +195,12 @@ const openAdd = () => {
     Object.assign(form, {
         id: null,
         drugName: "",
+        tradeName: "",
         specification: "",
         unit: "",
         manufacturer: "",
         price: 0,
-        type: "",
+        drugType: "",
         remark: "",
     });
     dialogVisible.value = true;
@@ -236,7 +246,7 @@ const handleDelete = (row) => {
     })
         .then(async () => {
             try {
-                const res = await removeDrug(row.id);
+                const res = await removeDrug({ id: row.id });
                 if (res.flag) {
                     ElMessage.success("删除成功");
                     loadDrugList();

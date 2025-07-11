@@ -7,6 +7,8 @@ import org.skraua.vo.ReimbursementRatioVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,4 +42,21 @@ public class ReimbursementRatioController {
         return ratioService.selectReimbursementRatioPage(ratioDTO);
     }
 
+    @ApiOperation("添加报销比例")
+    @PostMapping("/add")
+    public ResultVo<Void> addReimbursementRatio(@RequestBody ReimbursementRatioDTO dto) throws Exception {
+        return ratioService.addReimbursementRatio(dto);
+    }
+
+    @ApiOperation("修改报销比例")
+    @PostMapping("/edit")
+    public ResultVo<Void> updateReimbursementRatio(@RequestBody ReimbursementRatioDTO dto) throws Exception {
+        return ratioService.updateReimbursementRatio(dto);
+    }
+
+    @ApiOperation("删除报销比例")
+    @PostMapping("/remove")
+    public ResultVo<Void> removeReimbursementRatio(@RequestBody ReimbursementRatioDTO dto) throws Exception {
+        return ratioService.removeReimbursementRatio(dto.getId());
+    }
 }

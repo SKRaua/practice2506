@@ -18,4 +18,10 @@ public interface ReimbursementRatioService extends IService<ReimbursementRatio> 
     public ResultVo<Page<ReimbursementRatioVo>> selectReimbursementRatioPage(ReimbursementRatioDTO ratioDTO)
             throws Exception;
 
+    ResultVo<Void> addReimbursementRatio(ReimbursementRatioDTO dto) throws Exception;
+
+    ResultVo<Void> updateReimbursementRatio(ReimbursementRatioDTO dto) throws Exception;
+
+    ResultVo<Void> removeReimbursementRatio(Integer id) throws Exception;
+
 }

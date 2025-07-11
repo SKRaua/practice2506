@@ -15,5 +15,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @description 疾病维护表Service
  */
 public interface DiseaseService extends IService<Disease> {
- ResultVo<Page<DiseaseVo>> selectDiseaseVoPage(DiseaseDTO diseaseDTO) throws Exception;
+    ResultVo<Page<DiseaseVo>> selectDiseaseVoPage(DiseaseDTO diseaseDTO) throws Exception;
+
+    ResultVo<Void> addDisease(Disease disease);
+
+    ResultVo<Void> updateDisease(Disease disease);
+
+    ResultVo<Void> deleteDisease(Integer id);
 }

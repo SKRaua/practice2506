@@ -73,8 +73,15 @@
         </el-container>
 
         <!-- 详情弹窗 -->
-        <el-dialog title="报销详情" v-model="detailDialogVisible" width="600px">
-            <div style="text-align:center;color:#888;">报销详情内容待实现</div>
+        <el-dialog title="报销详情" v-model="detailDialogVisible" width="700px">
+            <div class="detail-pie-row">
+                <div class="detail-pie-col">
+                    <VueECharts :option="pieOption(detailPieData, '各费用占比')" autoresize style="height:260px;" />
+                </div>
+                <div class="detail-pie-col">
+                    <VueECharts :option="pieOption(detailPieRbData, '报销/自付占比')" autoresize style="height:260px;" />
+                </div>
+            </div>
             <template #footer>
                 <el-button @click="detailDialogVisible = false">关闭</el-button>
             </template>
@@ -159,8 +166,17 @@ import { selectInsurederPage } from "@/api/insurederApi.js";
 import { getDrugOrderPage } from "@/api/drugOrderApi.js";
 import { getMedicalServiceOrderPage } from "@/api/medicalServiceOrderApi.js";
 import { getTreatmentItemOrderPage } from "@/api/treatmentItemOrderApi.js";
-import { getReimbursementRatioPage } from "@/api/reimbursementRatioMapperApi.js";
+import { getReimbursementRatioPage, } from "@/api/reimbursementRatioApi.js";
+import { getEnabledDrugRbRatios } from "@/api/drugReimbursementRatioApi.js";
 import { calculateRb, confirmRb } from "@/api/reimbursementRecordApi.js";
+
+
+import { use } from 'echarts/core';
+import { PieChart } from 'echarts/charts';
+import { CanvasRenderer } from 'echarts/renderers';
+import { LegendComponent, TooltipComponent } from 'echarts/components';
+import VueECharts from 'vue-echarts';
+use([PieChart, CanvasRenderer, LegendComponent, TooltipComponent]);
 
 // 查询参数
 const queryParams = reactive({
@@ -187,7 +203,6 @@ const reimburseDialogVisible = ref(false);
 
 // 报销弹窗相关数据
 const selectedInsureder = ref(null);// 被选中的医保对象
-// const calculatedRb = ref([]);// 计算后报销详情
 const totalFee = ref('');// 总费用
 const reimbursementFee = ref('');// 医保报销费用
 const selfFee = ref('');// 自付费用
@@ -196,14 +211,68 @@ const drugBList = ref([]); // 乙类
 const drugCList = ref([]); // 丙类
 const serviceAndItemList = ref([]); // 医疗服务+诊疗项目
 const reimbursementRatioList = ref([]);// 报销比例
+const enabledRatios = ref([]); // 启用的药品报销比例
 
-// 四张表格配置
-const drugTables = computed(() => [
-    { title: "甲类药品", ratio: "100%", fee: "", data: drugAList.value },
-    { title: "乙类药品", ratio: "80%", fee: "", data: drugBList.value },
-    { title: "丙类药品", ratio: "10%", fee: "", data: drugCList.value }
-]);
+// 四张表格配置，ratio动态取自enabledRatios
+const drugTables = computed(() => {
+    const ratioMap = {};
+    enabledRatios.value.forEach(item => {
+        ratioMap[item.drugType] = item.drugRatio;
+    });
+    return [
+        { title: "甲类药品", ratio: ratioMap["甲类"] ? ratioMap["甲类"] + "%" : "-", fee: "", data: drugAList.value },
+        { title: "乙类药品", ratio: ratioMap["乙类"] ? ratioMap["乙类"] + "%" : "-", fee: "", data: drugBList.value },
+        { title: "丙类药品", ratio: ratioMap["丙类"] ? ratioMap["丙类"] + "%" : "-", fee: "", data: drugCList.value }
+    ];
+});
 
+// 饼图数据：药品/其他费用占比
+const detailPieData = computed(() => {
+    // 计算各类费用
+    const drugA = drugAList.value.reduce((sum, d) => sum + d.price * d.quantity, 0);
+    const drugB = drugBList.value.reduce((sum, d) => sum + d.price * d.quantity, 0);
+    const drugC = drugCList.value.reduce((sum, d) => sum + d.price * d.quantity, 0);
+    const other = serviceAndItemList.value.reduce((sum, d) => sum + d.price * d.quantity, 0);
+    return [
+        { value: drugA, name: '甲类药品' },
+        { value: drugB, name: '乙类药品' },
+        { value: drugC, name: '丙类药品' },
+        { value: other, name: '其他费用' },
+    ].filter(item => item.value > 0);
+});
+// 饼图数据：报销/自付占比
+const detailPieRbData = computed(() => {
+    const rb = Number(reimbursementFee.value) || 0;
+    const self = Number(selfFee.value) || 0;
+    return [
+        { value: rb, name: '报销费用' },
+        { value: self, name: '自付费用' },
+    ].filter(item => item.value > 0);
+});
+
+// 饼图option
+const pieOption = (data, title) => ({
+    // color: ['#ec407a', '#42a5f5', '#ffd600', '#66bb6a', '#ab47bc', '#ff7043'],
+    title: {
+        text: title,
+        left: 'center',
+        top: 10,
+        textStyle: { fontSize: 15, color: '#ad1457' }
+    },
+    tooltip: { trigger: 'item', formatter: '{b}: {c}元 ({d}%)' },
+    legend: { bottom: 0, left: 'center', textStyle: { color: '#ad1457' } },
+    series: [
+        {
+            name: title,
+            type: 'pie',
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            itemStyle: { borderRadius: 8, borderColor: '#fff', borderWidth: 2 },
+            label: { show: true, formatter: '{b}\n{d}%' },
+            data,
+        },
+    ],
+});
 
 // 加载数据
 const loadCustomerList = async () => {
@@ -237,10 +306,48 @@ const handleCurrentChange = (curPage) => {
 };
 
 // 打开详情弹窗
-const openDetail = (row) => {
+const openDetail = async (row) => {
+    // 查询三类药品
+    const [drugARes, drugBRes, drugCRes] = await Promise.all([
+        getDrugOrderPage({ patientId: row.id, drugType: "甲类", page: 1, pageSize: 100 }),
+        getDrugOrderPage({ patientId: row.id, drugType: "乙类", page: 1, pageSize: 100 }),
+        getDrugOrderPage({ patientId: row.id, drugType: "丙类", page: 1, pageSize: 100 }),
+    ]);
+    drugAList.value = drugARes.flag ? drugARes.data.records : [];
+    drugBList.value = drugBRes.flag ? drugBRes.data.records : [];
+    drugCList.value = drugCRes.flag ? drugCRes.data.records : [];
+    // 查询医疗服务和诊疗项目，并合并
+    const [serviceRes, itemRes] = await Promise.all([
+        getMedicalServiceOrderPage({ patientId: row.id, page: 1, pageSize: 100 }),
+        getTreatmentItemOrderPage({ patientId: row.id, page: 1, pageSize: 100 }),
+    ]);
+    const serviceList = (serviceRes.flag ? serviceRes.data.records : []).map(item => ({
+        itemName: item.serviceName || item.itemName,
+        unit: item.unit,
+        quantity: item.quantity,
+        price: item.price,
+    }));
+    const itemList = (itemRes.flag ? itemRes.data.records : []).map(item => ({
+        itemName: item.itemName,
+        unit: item.unit,
+        quantity: item.quantity,
+        price: item.price,
+    }));
+    serviceAndItemList.value = [...serviceList, ...itemList];
+    // 查询报销金额详情
+    const params = { patientId: row.id };
+    const res = await calculateRb(params);
+    if (res.flag) {
+        totalFee.value = res.data.totalFee;
+        reimbursementFee.value = res.data.reimbursementAmount;
+        selfFee.value = res.data.selfPayAmount;
+    } else {
+        totalFee.value = '';
+        reimbursementFee.value = '';
+        selfFee.value = '';
+    }
     detailDialogVisible.value = true;
 };
-
 
 // 初始化
 onMounted(() => {
@@ -266,7 +373,6 @@ const openReimburse = async (row) => {
         getMedicalServiceOrderPage({ patientId: row.id, page: 1, pageSize: 100 }),
         getTreatmentItemOrderPage({ patientId: row.id, page: 1, pageSize: 100 }),
     ]);
-    // 统一字段名为 itemName/unit/quantity/price
     const serviceList = (serviceRes.flag ? serviceRes.data.records : []).map(item => ({
         itemName: item.serviceName || item.itemName,
         unit: item.unit,
@@ -283,6 +389,9 @@ const openReimburse = async (row) => {
 
     // 查询报销比例
     await loadReimbursementRatioList();
+
+    // 查询药品报销比例（只在弹窗打开时查）
+    await loadEnabledRatios();
 
     // 查询报销
     await loadCalculatedRb();
@@ -305,6 +414,16 @@ const loadReimbursementRatioList = async () => {
         reimbursementRatioList.value = res.data.records;
     } else {
         reimbursementRatioList.value = [];
+    }
+};
+
+// 查询药品报销比例
+const loadEnabledRatios = async () => {
+    const res = await getEnabledDrugRbRatios();
+    if (res.flag) {
+        enabledRatios.value = res.data;
+    } else {
+        enabledRatios.value = [];
     }
 };
 
@@ -484,5 +603,25 @@ const handleConfirmRb = async () => {
     font-size: 15px;
     margin-bottom: 8px;
     font-weight: bold;
+}
+
+.detail-pie-row {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 10px 0 0 0;
+}
+
+.detail-pie-col {
+    flex: 1;
+    min-width: 0;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px #f8bbd0;
+    padding: 10px 10px 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 </style>

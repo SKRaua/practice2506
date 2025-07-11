@@ -9,6 +9,8 @@ import org.skraua.vo.DiseaseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import org.skraua.pojo.Disease;
+
 /**
  * @author Zhou Xinyang
  * @date 2025/07/10
@@ -29,5 +31,23 @@ public class DiseaseController {
     })
     public ResultVo<Page<DiseaseVo>> selectDiseaseVoPage(DiseaseDTO diseaseDTO) throws Exception {
         return diseaseService.selectDiseaseVoPage(diseaseDTO);
+    }
+
+    @ApiOperation("新增疾病")
+    @PostMapping("/add")
+    public ResultVo<Void> addDisease(@RequestBody Disease disease) {
+        return diseaseService.addDisease(disease);
+    }
+
+    @ApiOperation("修改疾病")
+    @PostMapping("/update")
+    public ResultVo<Void> updateDisease(@RequestBody Disease disease) {
+        return diseaseService.updateDisease(disease);
+    }
+
+    @ApiOperation("删除疾病")
+    @PostMapping("/delete")
+    public ResultVo<Void> deleteDisease(@RequestBody Disease disease) {
+        return diseaseService.deleteDisease(disease.getId());
     }
 }

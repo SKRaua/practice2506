@@ -2,7 +2,6 @@
 package org.skraua.mapper;
 
 import org.apache.ibatis.annotations.Param;
-import org.skraua.dto.InsurederDTO;
 import org.skraua.dto.ReimbursementRatioDTO;
 import org.skraua.pojo.ReimbursementRatio;
 import org.skraua.vo.InsurederVo;

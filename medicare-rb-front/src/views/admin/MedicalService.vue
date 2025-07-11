@@ -33,9 +33,12 @@
                                     :index="(i) => (page.currentPage - 1) * page.pageSize + i + 1" />
                                 <el-table-column align="center" prop="itemName" label="服务名称" width="120" />
                                 <el-table-column align="center" prop="itemCode" label="服务编码" width="100" />
-                                <el-table-column align="center" prop="unit" label="单位" width="60" />
+                                <el-table-column align="center" prop="nationalCode" label="国家统一编码" width="120" />
+                                <el-table-column align="center" prop="description" label="服务详情说明" width="150" />
+                                <el-table-column align="center" prop="exclusion" label="除外内容" width="100" />
+                                <el-table-column align="center" prop="unit" label="计价单位" width="80" />
                                 <el-table-column align="center" prop="price" label="单价" width="80" />
-                                <el-table-column align="center" prop="itemType" label="分类" width="80" />
+                                <el-table-column align="center" prop="itemType" label="分类" width="100" />
                                 <el-table-column align="center" prop="remark" label="备注" />
                                 <el-table-column align="center" label="操作" width="160" fixed="right">
                                     <template #default="scope">
@@ -70,7 +73,16 @@
                 <el-form-item label="服务编码" prop="itemCode">
                     <el-input v-model="form.itemCode" />
                 </el-form-item>
-                <el-form-item label="单位" prop="unit">
+                <el-form-item label="国家统一编码" prop="nationalCode">
+                    <el-input v-model="form.nationalCode" />
+                </el-form-item>
+                <el-form-item label="服务详情说明" prop="description">
+                    <el-input v-model="form.description" type="textarea" />
+                </el-form-item>
+                <el-form-item label="除外内容" prop="exclusion">
+                    <el-input v-model="form.exclusion" type="textarea" />
+                </el-form-item>
+                <el-form-item label="计价单位" prop="unit">
                     <el-input v-model="form.unit" />
                 </el-form-item>
                 <el-form-item label="单价" prop="price">
@@ -80,7 +92,7 @@
                     <el-input v-model="form.itemType" />
                 </el-form-item>
                 <el-form-item label="备注" prop="remark">
-                    <el-input v-model="form.remark" />
+                    <el-input v-model="form.remark" type="textarea" />
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -121,6 +133,9 @@ const form = reactive({
     id: null,
     itemName: "",
     itemCode: "",
+    nationalCode: "",
+    description: "",
+    exclusion: "",
     unit: "",
     price: 0,
     itemType: "",
@@ -163,6 +178,9 @@ const openAdd = () => {
         id: null,
         itemName: "",
         itemCode: "",
+        nationalCode: "",
+        description: "",
+        exclusion: "",
         unit: "",
         price: 0,
         itemType: "",
@@ -205,7 +223,7 @@ const handleDelete = (row) => {
     })
         .then(async () => {
             try {
-                const res = await removeMedicalService(row.id);
+                const res = await removeMedicalService({ id: row.id });
                 if (res.flag) {
                     ElMessage.success("删除成功");
                     loadServiceList();
@@ -233,6 +251,7 @@ onMounted(() => {
     border-radius: 8px;
     padding: 16px;
 }
+
 .table-main .table-main-header {
     height: 50px;
     background-color: #ec407a;
@@ -244,33 +263,41 @@ onMounted(() => {
     border-radius: 8px 8px 0 0;
     margin-bottom: 10px;
 }
+
 .el-table {
     background: #fff0f6;
     color: #ad1457;
 }
+
 .el-table th {
     background: #f8bbd0 !important;
     color: #ad1457 !important;
 }
+
 .el-pagination.is-background .el-pager li:not(.disabled).active {
     background-color: #ec407a;
     color: #fff;
 }
+
 .el-button--primary {
     background-color: #ec407a;
     border-color: #ec407a;
 }
+
 .el-button--primary:hover {
     background-color: #ad1457;
     border-color: #ad1457;
 }
+
 .el-dialog__header {
     background: #f8bbd0;
     color: #ad1457;
 }
+
 .el-dialog__footer {
     background: #fff0f6;
 }
+
 .el-form-item__label {
     color: #ad1457;
 }

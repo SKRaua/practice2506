@@ -10,6 +10,6 @@ export function addReimbursementRatio(data) {
 export function updateReimbursementRatio(data) {
     return http.post("/reimbursementRatio/edit", data);
 }
-export function removeReimbursementRatio(id) {
-    return http.post("/reimbursementRatio/remove", { id });
+export function removeReimbursementRatio(data) {
+    return http.post("/reimbursementRatio/remove", data);
 }

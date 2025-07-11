@@ -15,4 +15,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface DrugService extends IService<Drug> {
     ResultVo<Page<DrugVo>> selectDrugVoPage(DrugDTO drugDTO) throws Exception;
+
+    ResultVo<Void> addDrug(DrugDTO dto) throws Exception;
+
+    ResultVo<Void> updateDrug(DrugDTO dto) throws Exception;
+
+    ResultVo<Void> removeDrug(Integer id) throws Exception;
+
 }

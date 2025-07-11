@@ -33,9 +33,12 @@
                                     :index="(i) => (page.currentPage - 1) * page.pageSize + i + 1" />
                                 <el-table-column align="center" prop="itemName" label="项目名称" width="120" />
                                 <el-table-column align="center" prop="itemCode" label="项目编码" width="100" />
-                                <el-table-column align="center" prop="unit" label="单位" width="60" />
+                                <el-table-column align="center" prop="nationalCode" label="国家统一编码" width="120" />
+                                <el-table-column align="center" prop="description" label="项目详情说明" width="150" />
+                                <el-table-column align="center" prop="exclusion" label="除外内容" width="100" />
+                                <el-table-column align="center" prop="unit" label="计价单位" width="80" />
                                 <el-table-column align="center" prop="price" label="单价" width="80" />
-                                <el-table-column align="center" prop="itemType" label="分类" width="80" />
+                                <el-table-column align="center" prop="itemType" label="财务分类" width="100" />
                                 <el-table-column align="center" prop="remark" label="备注" />
                                 <el-table-column align="center" label="操作" width="160" fixed="right">
                                     <template #default="scope">
@@ -70,17 +73,26 @@
                 <el-form-item label="项目编码" prop="itemCode">
                     <el-input v-model="form.itemCode" />
                 </el-form-item>
+                <el-form-item label="国家统一编码" prop="nationalCode">
+                    <el-input v-model="form.nationalCode" />
+                </el-form-item>
+                <el-form-item label="项目详情说明" prop="description">
+                    <el-input v-model="form.description" type="textarea" />
+                </el-form-item>
+                <el-form-item label="除外内容" prop="exclusion">
+                    <el-input v-model="form.exclusion" type="textarea" />
+                </el-form-item>
                 <el-form-item label="单位" prop="unit">
                     <el-input v-model="form.unit" />
                 </el-form-item>
                 <el-form-item label="单价" prop="price">
                     <el-input-number v-model="form.price" :min="0" />
                 </el-form-item>
-                <el-form-item label="分类" prop="itemType">
+                <el-form-item label="财务分类" prop="itemType">
                     <el-input v-model="form.itemType" />
                 </el-form-item>
                 <el-form-item label="备注" prop="remark">
-                    <el-input v-model="form.remark" />
+                    <el-input v-model="form.remark" type="textarea" />
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -121,6 +133,9 @@ const form = reactive({
     id: null,
     itemName: "",
     itemCode: "",
+    nationalCode: "",
+    description: "",
+    exclusion: "",
     unit: "",
     price: 0,
     itemType: "",
@@ -163,6 +178,9 @@ const openAdd = () => {
         id: null,
         itemName: "",
         itemCode: "",
+        nationalCode: "",
+        description: "",
+        exclusion: "",
         unit: "",
         price: 0,
         itemType: "",
@@ -205,7 +223,7 @@ const handleDelete = (row) => {
     })
         .then(async () => {
             try {
-                const res = await removeTreatmentItem(row.id);
+                const res = await removeTreatmentItem({ id: row.id });
                 if (res.flag) {
                     ElMessage.success("删除成功");
                     loadItemList();

@@ -33,11 +33,13 @@
                                     :index="(i) => (page.currentPage - 1) * page.pageSize + i + 1" />
                                 <el-table-column align="center" prop="hospitalLevel" label="医院级别" width="120" />
                                 <el-table-column align="center" prop="staffType" label="人员类型" width="100" />
+                                <el-table-column align="center" prop="startAmount" label="起付线" width="100" />
+                                <el-table-column align="center" prop="endAmount" label="封顶线" width="100" />
                                 <el-table-column align="center" prop="ratio" label="报销比例(%)" width="100" />
                                 <el-table-column align="center" prop="status" label="状态" width="80">
                                     <template #default="scope">
-                                        <el-tag :type="scope.row.status === 1 ? 'success' : 'info'">
-                                            {{ scope.row.status === 1 ? "启用" : "停用" }}
+                                        <el-tag :type="scope.row.status === '启用' ? 'success' : 'info'">
+                                            {{ scope.row.status }}
                                         </el-tag>
                                     </template>
                                 </el-table-column>
@@ -68,20 +70,36 @@
 
         <!-- 新增/编辑弹窗 -->
         <el-dialog :title="dialogTitle" v-model="dialogVisible" width="500px" :close-on-click-modal="false">
-            <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
+            <el-form :model="form" :rules="rules" ref="formRef" label-width="120px">
                 <el-form-item label="医院级别" prop="hospitalLevel">
-                    <el-input v-model="form.hospitalLevel" />
+                    <el-select v-model="form.hospitalLevel" placeholder="请选择">
+                        <el-option label="三级" value="三级" />
+                        <el-option label="二级" value="二级" />
+                        <el-option label="一级" value="一级" />
+                        <el-option label="社区" value="社区" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="人员类型" prop="staffType">
-                    <el-input v-model="form.staffType" />
+                    <el-select v-model="form.staffType" placeholder="请选择">
+                        <el-option label="在职" value="在职" />
+                        <el-option label="退休" value="退休" />
+                        <el-option label="无业" value="无业" />
+                        <el-option label="学生" value="学生" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="起付线" prop="startAmount">
+                    <el-input-number v-model="form.startAmount" :min="0" :precision="2" />
+                </el-form-item>
+                <el-form-item label="封顶线" prop="endAmount">
+                    <el-input-number v-model="form.endAmount" :min="0" :precision="2" />
                 </el-form-item>
                 <el-form-item label="报销比例(%)" prop="ratio">
                     <el-input-number v-model="form.ratio" :min="0" :max="100" />
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
                     <el-select v-model="form.status" placeholder="请选择">
-                        <el-option label="启用" :value="1" />
-                        <el-option label="停用" :value="0" />
+                        <el-option label="启用" value="启用" />
+                        <el-option label="停用" value="停用" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="备注" prop="remark">
@@ -126,14 +144,18 @@ const form = reactive({
     id: null,
     hospitalLevel: "",
     staffType: "",
+    startAmount: null,
+    endAmount: null,
     ratio: 0,
-    status: 1,
+    status: "启用",
     remark: "",
 });
 const formRef = ref(null);
 const rules = {
-    hospitalLevel: [{ required: true, message: "请输入医院级别", trigger: "blur" }],
-    staffType: [{ required: true, message: "请输入人员类型", trigger: "blur" }],
+    hospitalLevel: [{ required: true, message: "请选择医院级别", trigger: "change" }],
+    staffType: [{ required: true, message: "请选择人员类型", trigger: "change" }],
+    startAmount: [{ required: true, message: "请输入起付线", trigger: "blur" }],
+    endAmount: [{ required: true, message: "请输入封顶线", trigger: "blur" }],
     ratio: [{ required: true, message: "请输入报销比例", trigger: "blur" }],
     status: [{ required: true, message: "请选择状态", trigger: "change" }],
 };
@@ -169,8 +191,10 @@ const openAdd = () => {
         id: null,
         hospitalLevel: "",
         staffType: "",
+        startAmount: null,
+        endAmount: null,
         ratio: 0,
-        status: 1,
+        status: "启用",
         remark: "",
     });
     dialogVisible.value = true;
@@ -210,7 +234,7 @@ const handleDelete = (row) => {
     })
         .then(async () => {
             try {
-                const res = await removeReimbursementRatio(row.id);
+                const res = await removeReimbursementRatio({ id: row.id });
                 if (res.flag) {
                     ElMessage.success("删除成功");
                     loadRatioList();

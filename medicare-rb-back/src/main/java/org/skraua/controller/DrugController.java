@@ -7,6 +7,8 @@ import org.skraua.vo.DrugVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,5 +39,23 @@ public class DrugController {
     })
     public ResultVo<Page<DrugVo>> selectDrugVoPage(DrugDTO drugDTO) throws Exception {
         return drugService.selectDrugVoPage(drugDTO);
+    }
+
+    @ApiOperation("添加药品")
+    @PostMapping("/add")
+    public ResultVo<Void> addDrug(@RequestBody DrugDTO dto) throws Exception {
+        return drugService.addDrug(dto);
+    }
+
+    @ApiOperation("修改药品")
+    @PostMapping("/edit")
+    public ResultVo<Void> updateDrug(@RequestBody DrugDTO dto) throws Exception {
+        return drugService.updateDrug(dto);
+    }
+
+    @ApiOperation("删除药品")
+    @PostMapping("/remove")
+    public ResultVo<Void> removeDrug(@RequestBody DrugDTO dto) throws Exception {
+        return drugService.removeDrug(dto.getId());
     }
 }

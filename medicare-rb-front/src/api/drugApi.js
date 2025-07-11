@@ -13,6 +13,6 @@ export function updateDrug(data) {
     return http.post("/drug/edit", data);
 }
 // 删除
-export function removeDrug(id) {
-    return http.post("/drug/remove", { id });
+export function removeDrug(data) {
+    return http.post("/drug/remove", data);
 }

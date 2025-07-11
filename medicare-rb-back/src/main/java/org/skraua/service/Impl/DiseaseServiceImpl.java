@@ -29,4 +29,22 @@ public class DiseaseServiceImpl extends ServiceImpl<DiseaseMapper, Disease> impl
         diseaseMapper.selectDiseaseVoPage(page, diseaseDTO);
         return ResultVo.ok(page);
     }
+
+    @Override
+    public ResultVo<Void> addDisease(Disease disease) {
+        boolean res = this.save(disease);
+        return res ? ResultVo.ok("新增成功") : ResultVo.fail("新增失败");
+    }
+
+    @Override
+    public ResultVo<Void> updateDisease(Disease disease) {
+        boolean res = this.updateById(disease);
+        return res ? ResultVo.ok("修改成功") : ResultVo.fail("修改失败");
+    }
+
+    @Override
+    public ResultVo<Void> deleteDisease(Integer id) {
+        boolean res = this.removeById(id);
+        return res ? ResultVo.ok("删除成功") : ResultVo.fail("删除失败");
+    }
 }
