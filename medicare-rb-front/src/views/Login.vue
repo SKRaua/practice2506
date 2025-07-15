@@ -50,102 +50,102 @@ export default {
 
 <style scoped>
 .login-bg {
-  width: 100%;
-  height: 100%;
-  background: url(../assets/logbg.jpg) no-repeat center;
-  background-size: cover;
-  /* 裁剪超出边框内容，不显示滚动条 */
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   overflow: hidden;
 }
 
 .login {
-  margin: 200px auto 0 auto;
   min-height: 420px;
   max-width: 420px;
-  padding: 40px;
-  background-color: #fff;
-  border-radius: 4px;
+  width: 100%;
+  padding: 40px 36px 32px 36px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(236, 64, 122, 0.12), 0 1.5px 6px 0 rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .login .message {
-  margin: 10px 0 0 -58px;
-  padding: 18px 10px 18px 60px;
-  background: #ec407a;
-  position: relative;
-  color: #fff;
-  font-size: 20px;
-  font-weight: bolder;
-}
-
-.login #darkbannerwrap {
-  width: 18px;
-  height: 10px;
-  margin: 0 0 20px -58px;
-  position: relative;
-}
-
-.login input[type="email"],
-.login input[type="file"],
-.login input[type="password"],
-.login input[type="text"],
-select {
+  margin-bottom: 24px;
+  padding: 18px 0;
   width: 100%;
-  height: 30px;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  padding: 0 10px;
+  background: linear-gradient(90deg, #ec407a 60%, #f06292 100%);
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 8px 8px 0 0;
+  letter-spacing: 2px;
+  box-shadow: 0 2px 8px 0 rgba(236, 64, 122, 0.08);
+}
+
+.login form {
+  width: 100%;
+}
+
+.login input[type="text"],
+.login input[type="password"] {
+  width: 100%;
+  height: 40px;
+  border: 1.5px solid #f8bbd0;
+  border-radius: 6px;
+  padding: 0 12px;
+  margin-bottom: 18px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+  background: #fdf6fa;
   box-sizing: border-box;
 }
 
-/* 鼠标点击或者tab获得焦点时，蓝框 */
-.login input[type="email"]:focus,
-.login input[type="file"]:focus,
-.login input[type="password"]:focus,
 .login input[type="text"]:focus,
-select:focus {
-  border: 1px solid #ec407a;
-}
-
-/* 按钮样式 */
-.login input[type="submit"],
-.login input[type="button"] {
-  display: inline-block;
-  vertical-align: middle;
-  padding: 12px, 24px;
-  margin: 0;
-  font-size: 18px;
-  line-height: 24px;
-  text-align: center;
-  white-space: nowrap;
-  cursor: pointer;
-  color: #fff;
-  background-color: #ec407a;
-  border-radius: 3px;
-  border: none;
-  appearance: none;
-  -webkit-appearance: none;
-  outline: 0;
-  width: 100%;
-}
-
-.login hr {
+.login input[type="password"]:focus {
+  border-color: #ec407a;
+  outline: none;
   background: #fff;
 }
 
-.login hr .hr15 {
-  height: 15px;
+.login input[type="button"] {
+  padding: 12px 0;
+  font-size: 18px;
+  color: #fff;
+  background: linear-gradient(90deg, #ec407a 60%, #f06292 100%);
   border: none;
-  margin: 0;
-  padding: 0;
-  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 8px 0 rgba(236, 64, 122, 0.10);
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
-.login hr .hr20 {
-  height: 20px;
+.login input[type="button"]:hover {
+  background: linear-gradient(90deg, #f06292 60%, #ec407a 100%);
+  box-shadow: 0 4px 16px 0 rgba(236, 64, 122, 0.18);
+}
+
+.hr15,
+.hr20 {
   border: none;
+  background: transparent;
   margin: 0;
   padding: 0;
   width: 100%;
+  height: 0;
+}
+
+.hr15 {
+  height: 15px;
+}
+
+.hr20 {
+  height: 20px;
 }
 </style>

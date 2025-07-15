@@ -2,6 +2,12 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MedicareBackendApplication",
+            "request": "launch",
+            "mainClass": "com.cqupt.MedicareBackendApplication"
+        },
+        {
+            "type": "java",
             "name": "MedicareRbBack",
             "request": "launch",
             "mainClass": "org.skraua.MedicareRbBack",
